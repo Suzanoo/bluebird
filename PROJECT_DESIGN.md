@@ -3,7 +3,7 @@
 - Status: Approved
 - Last Updated: 2026-09-12
 - Authority: Product vision, scope, and high-level product direction
-- Stage: Design consolidation; M0 specification prepared, implementation not started
+- Stage: M0 specification approved; implementation not started
 
 ## Product direction
 
@@ -103,7 +103,7 @@ to implement all milestones.
 
 | Milestone | Direction |
 | --- | --- |
-| M0 | Application foundation — [specification for review](docs/milestones/M0-application-foundation.md) |
+| M0 | Application foundation — [approved specification](docs/milestones/M0-application-foundation.md) |
 | M1 | Project management and required persistence |
 | M2 | Schedule import |
 | M3 | Progress engine |
@@ -124,4 +124,4 @@ M9 is not the starting point for those concerns.
 replaced generated-amount wording with the referenced weighting contract;
 separated authoritative technical/business rules from product direction;
 retained the BOQ workbook decision; replaced the original bootstrap acceptance
-section with a link to the distinct, not-yet-implemented M0 specification.
+section with a link to the distinct M0 specification.

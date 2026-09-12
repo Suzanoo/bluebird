@@ -1,16 +1,16 @@
 # M0 — Application foundation
 
-- Status: Review
+- Status: Approved
 - Last Updated: 2026-09-12
 - Related Milestone: M0
-- Authority: Proposed M0 scope, exclusions, and acceptance criteria
+- Authority: Approved M0 scope, exclusions, and acceptance criteria
 - Implementation: Not started; no acceptance checks executed
 
 ## Purpose
 
 Establish a small Bluebird application shell and development foundation on the
-existing Next.js starter. This specification does not authorize implementation;
-owner approval and a separate implementation task are required.
+existing Next.js starter. This specification authorizes implementation only
+through a separate scoped implementation task from the owner.
 
 ## Required Reading
 
