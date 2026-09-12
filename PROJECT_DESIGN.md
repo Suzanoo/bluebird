@@ -1,276 +1,127 @@
 # Bluebird — Project Design
 
-## Document Status
-
-- Status: Living Document
-- Project Stage: Product Discovery / Requirements
-- Current Milestone: Foundation
+- Status: Approved
 - Last Updated: 2026-09-12
+- Authority: Product vision, scope, and high-level product direction
+- Stage: Design consolidation; M0 specification prepared, implementation not started
 
----
+## Product direction
 
-## 1. Product Vision
+Bluebird is a construction management web application focused primarily on
+**Progress**, **Cost**, and future integration between them. It grows from practical
+construction workflows; it is not intended to reproduce P6, Microsoft Project,
+or a full ERP.
 
-Bluebird is a construction management application focused on transforming project schedule data into practical progress management workflows and dashboards.
+**Document Management is currently out of scope**, including RFI, submittals,
+drawing/document control, transmittals, NCR, safety, and photo management.
 
-The product is intended to grow incrementally from real construction-management workflows rather than attempting to reproduce Primavera P6, Microsoft Project, or a full ERP system.
+Progress is the first delivery focus. Detailed Cost capabilities and the exact
+V1 Progress/Cost boundary remain TBD. Future candidates are not approved modules.
 
----
+## Product scope
 
-## 2. Problem
+The planned product includes project creation/configuration, schedule ingestion,
+progress weighting, a Progress Dashboard, native Actual Progress entry, and
+weekly/monthly reporting. Output formats and detailed calculations remain TBD.
 
-TBD
+Planned schedule inputs are P6 XML and MSP XML. Native Microsoft Project
+`.mpp` support remains a feasibility/scope question, not a V1 commitment.
+Round-trip schedule export is not part of the initial import delivery;
+preserving identity does not constitute an export guarantee.
 
----
+### DEC-001 — BOQ creation in the initial version
 
-## 3. Users & Customers
+Users may upload an existing BOQ workbook. If they have none, Bluebird exports a
+standard workbook template, the user completes it externally, and uploads it.
+A native BOQ editor is excluded initially to keep the delivery focused.
+BOQ must not block useful Progress operation.
 
-TBD
+Payment, Earned Value, a BOQ Dashboard, and native BOQ management remain future
+possibilities requiring separate design. No detailed Cost module list is approved.
 
----
+## Workflow and UX
 
-## 4. Value Proposition
+Conceptual flow, not a fixed screen sequence:
 
-TBD
+Create Project → Configure Project → Import Schedule → Resolve Progress Weighting
+→ Progress Dashboard / Native Progress Update → BOQ / Mapping.
 
----
+Project setup should be practical and the visual identity recognizable.
+Detailed appearance options, reporting configuration, double-click dialogs,
+and navigation trees remain candidates.
 
-## 5. User Workflow
+### DEC-003 — Minimal Project Creation (Approved, V1)
 
-Initial concept:
+Creating a Project requires only these two user-facing fields:
 
-Create Project  
-→ Project Configuration  
-→ Import Schedule  
-→ Resolve Amount  
-→ Progress Dashboard  
-→ Progress Update  
-→ BOQ / Mapping
+- Project Name — required.
+- Project Code — required.
 
-This workflow is expected to evolve during development.
+All other project information and configuration belongs after project creation
+in Project Configuration. Its detailed field contract remains TBD until the
+relevant feature design.
 
----
+Internal identity and ownership follow the
+[architecture foundation](docs/architecture/foundation.md#project-identity) and
+[Workspace ownership decision](docs/architecture/decisions/ADR-001-workspace-ownership.md);
+they do not introduce additional user-facing creation fields.
 
-## 6. Inputs
+For the approved reporting and weighting rules, use the
+[Progress contract](docs/features/progress-contract.md).
+For ownership and identity, use the
+[architecture foundation](docs/architecture/foundation.md).
 
-Planned schedule inputs:
+## Open product questions
 
-- Microsoft Project
-- Microsoft Project XML
-- Primavera P6 XML
+- Problem statement, target user/customer segments, and value proposition.
+- Exact V1 boundary and first Cost capability.
+- Detailed validation of Project Name/Code and Project Configuration fields;
+  the two required creation fields are settled by DEC-003.
+- Detailed BOQ template/validation and mapping workflow.
+- Output contracts and detailed Progress Update UX.
 
-Cost / amount behavior:
+Reporting/business TBDs have their single home in the
+[Progress contract](docs/features/progress-contract.md#unresolved-business-rules).
+Technical TBDs are tracked in the
+[architecture foundation](docs/architecture/foundation.md#decision-timing).
 
-- If an amount/cost field exists, the user selects which field should be used.
-- If no amount is available, Bluebird can generate a temporary/fake amount distribution so the project can still produce a progress dashboard.
+## DEC-002 — Living requirements and authority
 
-BOQ:
+This document remains editable as decisions evolve. An Approved status applies
+to explicit decisions, not to sections labeled conceptual, candidate, or TBD.
+Unknown rules must not be guessed.
 
-- User may upload an existing BOQ workbook.
-- If no BOQ exists, Bluebird will export a standard BOQ workbook template.
-- User completes the workbook externally and uploads it back to Bluebird.
+Detailed technical decisions, feature contracts, and milestone scope have their
+own authoritative homes under the [documentation map](docs/README.md).
+They are referenced here rather than copied into a growing all-purpose document.
+Product owners approve changes to product/business direction.
 
----
+## Roadmap — planning direction
 
-## 7. Outputs
+This table retains M0–M9 as a high-level planning sequence, not authorization
+to implement all milestones.
 
-Initial outputs may include:
-
-- Progress Dashboard
-- Weekly reporting information
-- Monthly reporting information
-- BOQ template workbook
-- Mapping results
-
-Exact output contracts are TBD.
-
----
-
-## 8. Features
-
-### Planned for Initial Product
-
-- Project creation
-- Project configuration
-- Schedule import
-- Amount selection / generated amount
-- Progress Dashboard
-- Native progress update workflow
-- BOQ template export/import
-- Schedule ↔ BOQ mapping
-
-### Future
-
-- Payment
-- Earned Value
-- BOQ Dashboard
-- Native BOQ management
-
-### Out of Scope for Initial Version
-
-- Full BOQ editor
-- Full Primavera P6 replacement
-- Full Microsoft Project replacement
-
----
-
-## 9. UX / UI
-
-Bluebird should have a recognizable visual identity rather than a generic construction SaaS interface.
-
-Project configuration may allow the user to customize:
-
-- Theme
-- Background
-- Accent
-- Project identity
-- Logo
-- Dashboard presentation
-
-Detailed UX is TBD.
-
----
-
-## 10. Progress Update Workflow
-
-Construction progress is updated periodically for Weekly and Monthly reporting.
-
-The responsible user must be able to enter Actual Progress for individual activities directly inside Bluebird.
-
-Initial UX concept:
-
-Open Project  
-→ Select Reporting Date  
-→ View Activities  
-→ Double-click Activity  
-→ Progress Update dialog  
-→ Save  
-→ Dashboard updates
-
-The Activity Update dialog may take inspiration from familiar Primavera P6 / Microsoft Project workflows without copying their UI.
-
-Progress should preserve reporting history rather than overwrite a single current value.
-
-Example:
-
-- 31 Aug — 12%
-- 07 Sep — 18%
-- 14 Sep — 27%
-- 21 Sep — 35%
-
-Detailed progress fields and calculation rules are TBD.
-
----
-
-## 11. Domain & Business Rules
-
-TBD
-
----
-
-## 12. Data Model
-
-Potential domain concepts:
-
-- Project
-- WBS
-- Activity
-- Schedule
-- Reporting Period
-- Progress Update
-- Amount
-- BOQ Item
-- Mapping
-
-This is conceptual only and does not yet define the database schema.
-
----
-
-## 13. Architecture
-
-TBD
-
-Initial application platform:
-
-- Next.js
-- Vercel
-- GitHub
-
-Technology decisions beyond this should be made only when requirements justify them.
-
----
-
-## 14. Decisions
-
-### DEC-001 — BOQ Creation in Initial Version
-
-Bluebird will not provide a native web-based BOQ editor initially.
-
-If a user does not have a BOQ, Bluebird exports a standard workbook template.
-
-The user completes the workbook externally and uploads it back into Bluebird.
-
-Reason:
-
-Keep the initial product focused on schedule, progress, and mapping.
-
-Future:
-
-A native BOQ module and BOQ Dashboard may be added later.
-
----
-
-### DEC-002 — Living Requirements
-
-This document is intentionally incomplete.
-
-Requirements, product decisions, UX concepts, architecture decisions, and lessons learned will be added as the product evolves.
-
-Unknown or undecided items should be marked TBD rather than guessed.
-
----
-
-## 15. Open Questions
-
-TBD
-
----
-
-## 16. Milestones
-
-### Foundation
-
-- Initialize Next.js application
-- Create GitHub repository
-- Deploy initial application to Vercel
-- Establish PROJECT_DESIGN.md
-
-Future milestones will be defined after product requirements become clearer.
-
----
-
-## 17. Acceptance Criteria
-
-Foundation is complete when:
-
-- Bluebird runs locally.
-- Source is stored in GitHub.
-- Production deployment is available on Vercel.
-- PROJECT_DESIGN.md exists as the project's living design document.
-
----
-
-## 18. Lessons Learned
-
-TBD
-
----
-
-## 19. Change Log
-
-### 2026-09-12
-
-- Created initial Bluebird product-design document.
-- Established schedule-first product concept.
-- Defined preliminary BOQ workbook workflow.
-- Recorded native progress-update requirement.
+| Milestone | Direction |
+| --- | --- |
+| M0 | Application foundation — [specification for review](docs/milestones/M0-application-foundation.md) |
+| M1 | Project management and required persistence |
+| M2 | Schedule import |
+| M3 | Progress engine |
+| M4 | Native progress update |
+| M5 | Progress Dashboard and reporting |
+| M6 | Cost foundation; separate design required |
+| M7 | BOQ and mapping; separate design required |
+| M8 | Progress/Cost integration; separate design required |
+| M9 | Overall production readiness and hardening |
+
+Production readiness is incremental, governed by the
+[decision timing gates](docs/architecture/foundation.md#decision-timing);
+M9 is not the starting point for those concerns.
+
+## Consolidation record
+
+2026-09-12: broadened the original schedule-first vision; clarified input scope;
+replaced generated-amount wording with the referenced weighting contract;
+separated authoritative technical/business rules from product direction;
+retained the BOQ workbook decision; replaced the original bootstrap acceptance
+section with a link to the distinct, not-yet-implemented M0 specification.

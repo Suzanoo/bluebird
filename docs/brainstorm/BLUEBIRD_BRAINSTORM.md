@@ -1,6 +1,6 @@
 # Bluebird --- Product & Architecture Brainstorm
 
-**Status:** Brainstorm / Review Material\
+**Status:** Review (historical exploration; not authority)\
 **Project Stage:** Product Discovery / Requirements\
 **Date:** 2026-09-12\
 **Audience:** Product owners and implementation reviewer (Work)
@@ -9,11 +9,19 @@
 > architecture, and open questions discussed before implementation.
 >
 > **It is not an implementation specification.**\
-> `PROJECT_DESIGN.md` remains the living source of truth for approved
-> decisions.
+> [PROJECT_DESIGN.md](../../PROJECT_DESIGN.md) owns approved product direction.
+> Use the [documentation map](../README.md) for current technical and feature authority.
 >
 > Review this document critically before implementation. Do not treat
 > every brainstorm item as an approved requirement.
+
+> Consolidation note — 2026-09-12: The body below is retained as the original
+> exploration record, not maintained as a second rulebook. "Agreed" and "Decision"
+> labels, old review-task instructions, proposed fields, and milestone details
+> reflect that earlier discussion only. Current approved rules are linked in the
+> documentation map above. In particular, old generated-amount terminology, the
+> dependency diagram, ownership TBD, and M9-only production concerns are not
+> implementation instructions. Read this file only when explicitly requested.
 
 ------------------------------------------------------------------------
 
