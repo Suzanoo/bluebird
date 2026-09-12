@@ -4,7 +4,7 @@
 - Last Updated: 2026-09-12
 - Related Milestone: M0
 - Authority: Approved M0 scope, exclusions, and acceptance criteria
-- Implementation: Not started; no acceptance checks executed
+- Implementation: Implemented; browser acceptance checks pending
 
 ## Purpose
 
@@ -74,3 +74,19 @@ this specification.
 Deliver the focused changed files and verification results under the Git/delivery
 authorization of the implementation task. Reserve tags for meaningful stable
 releases, not every milestone or review. Do not advance to M1 automatically.
+
+## Implementation verification — 2026-09-12
+
+- Adapted the existing starter with Home and an empty `/workspace` preview,
+  shared header/footer, active navigation, skip link, focus styles and Bluebird icon.
+- No dependencies, business features, persistence or unused domain layers added.
+- `npm run lint`: passed.
+- `npm run build`: passed, including TypeScript and static prerendering.
+- `git diff --check`: passed.
+- Generated HTML on both routes: one main landmark, one H1, labeled navigation,
+  valid navigation targets and explicit empty-preview wording verified.
+- Browser interaction, refresh, responsive visual layout and keyboard/focus
+  acceptance remain unverified. Local browser downloads failed (TLS/download
+  errors); the cloud browser rejected localhost with ERR_BLOCKED_BY_CLIENT.
+- These browser checks must pass before M0 acceptance. No production deployment
+  was performed. Scope and acceptance criteria above are unchanged.
