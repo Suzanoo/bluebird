@@ -1,0 +1,44 @@
+[
+  {
+    "activities": 2,
+    "method": "Duration",
+    "normalize_s": 0.0002770270002656616,
+    "parse_s": 0.00012984600016352488,
+    "peak_rss_mib": 33.82421875,
+    "python": "3.12.14",
+    "total_s": 0.01133605900031398,
+    "workbook_s": 0.010929185999884794,
+    "xlsx_bytes": 8941,
+    "xml_bytes": 593,
+    "profile": "small",
+    "periods": 8
+  },
+  {
+    "activities": 200,
+    "method": "Duration",
+    "normalize_s": 0.002113021999321063,
+    "parse_s": 0.0016669300002831733,
+    "peak_rss_mib": 55.47265625,
+    "python": "3.12.14",
+    "total_s": 1.0960131789997831,
+    "workbook_s": 1.0922332270001789,
+    "xlsx_bytes": 174468,
+    "xml_bytes": 42726,
+    "profile": "typical",
+    "periods": 104
+  },
+  {
+    "activities": 1000,
+    "method": "Duration",
+    "normalize_s": 0.00969605699992826,
+    "parse_s": 0.008379836000131036,
+    "peak_rss_mib": 182.7578125,
+    "python": "3.12.14",
+    "total_s": 11.775458781999987,
+    "workbook_s": 11.757382888999928,
+    "xlsx_bytes": 1094450,
+    "xml_bytes": 214210,
+    "profile": "large",
+    "periods": 156
+  }
+]

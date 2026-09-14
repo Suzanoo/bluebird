@@ -1,0 +1,19 @@
+test_custom_id_requires_evidence (test_proof.Proof.test_custom_id_requires_evidence) ... ok
+test_duration_adapter_fields (test_proof.Proof.test_duration_adapter_fields) ... ok
+test_duration_format_regression (test_proof.Proof.test_duration_format_regression) ... ok
+test_equal_and_duration_oracle (test_proof.Proof.test_equal_and_duration_oracle) ... ok
+test_equivalent_sources_and_preserved_identity (test_proof.Proof.test_equivalent_sources_and_preserved_identity) ... ok
+test_formula_injection_is_text (test_proof.Proof.test_formula_injection_is_text) ... ok
+test_generated_main_formulas_against_independent_oracle (test_proof.Proof.test_generated_main_formulas_against_independent_oracle) ... ok
+test_hostile_xml_and_structure (test_proof.Proof.test_hostile_xml_and_structure) ... ok
+test_http_xml_to_download (test_proof.Proof.test_http_xml_to_download) ... ok
+test_milestones_zero_invalid_and_denominator (test_proof.Proof.test_milestones_zero_invalid_and_denominator) ... ok
+test_missing_duration_no_silent_fallback (test_proof.Proof.test_missing_duration_no_silent_fallback) ... ok
+test_no_default_or_amount (test_proof.Proof.test_no_default_or_amount) ... ok
+test_plan_conservation_and_fixed_denominator (test_proof.Proof.test_plan_conservation_and_fixed_denominator) ... ok
+test_workbook_contract_and_roundtrip (test_proof.Proof.test_workbook_contract_and_roundtrip) ... ok
+
+----------------------------------------------------------------------
+Ran 14 tests in 0.086s
+
+OK

@@ -10,7 +10,9 @@
 - [Architecture foundation](architecture/foundation.md)
 - [Workspace ownership ADR](architecture/decisions/ADR-001-workspace-ownership.md)
 - [Progress contract](features/progress-contract.md) — approved constraints; not implemented
-- [M0 specification](milestones/M0-application-foundation.md) — Review; not implemented
+- [M0 specification](milestones/M0-application-foundation.md) — implemented and merged; historical acceptance evidence retained
+
+- [F0 proof and acceptance](milestones/F0-file-workbook-proof.md) — Desktop Excel accepted by Product Owner; deployed runtime gate outstanding
 
 ## One authoritative home for each rule
 

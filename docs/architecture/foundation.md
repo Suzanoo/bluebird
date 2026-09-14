@@ -9,6 +9,14 @@ Product scope belongs to [Project Design](../../PROJECT_DESIGN.md).
 Workspace ownership is defined once in
 [ADR-001](decisions/ADR-001-workspace-ownership.md).
 
+## Initial file workflow scope
+
+An ephemeral conversion/import context is not a persisted cloud Project.
+Workspace ownership and authentication apply when persisted Projects arrive;
+no account, database or Workspace is required for initial XML conversion.
+Domain/adapter and identity boundaries below still apply. F0 proof code lives
+under `spikes/f0`; it is not a production engine or approved deployment ADR.
+
 ## Project identity
 
 Every Project has an immutable internal `project_id`.
@@ -59,7 +67,7 @@ Reporting and weighting semantics are owned by the
 
 ## Decision timing
 
-Before M1 stores real cloud Project data, explicitly review persistence,
+Before any future milestone stores real cloud Project data, explicitly review persistence,
 the ownership boundary in ADR-001, authentication/authorization, and migration
 implications. Provider/schema choices and any interim access arrangement remain
 TBD. M0 is not a place to install these capabilities.
@@ -68,7 +76,7 @@ Introduce authorization/security, data integrity, migration discipline, and
 recovery when the relevant persisted or multi-user capability appears.
 An M9 readiness review does not defer those obligations.
 
-Before M2, resolve canonical schedule field/date/percentage semantics against
+Before F1 delivery, resolve canonical schedule field/date/percentage semantics against
 representative P6/MSP inputs, source identity handling, file handling, and bounded
 import processing. Do not infer native MPP support from XML support.
 

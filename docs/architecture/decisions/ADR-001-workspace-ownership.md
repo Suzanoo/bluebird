@@ -5,6 +5,12 @@
 - Authority: Canonical Workspace/Project ownership decision
 - Implementation: Not implemented
 
+## Applicability after file-oriented V1 decision
+
+This approved ownership rule is retained for future persisted cloud Projects.
+The initial file conversion context does not create a persisted Project or
+Workspace. Workspace, membership and authentication implementation are deferred.
+
 ## Context
 
 Bluebird may eventually support users operating across multiple workspaces.
