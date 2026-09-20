@@ -3,7 +3,21 @@
 - Status: Approved
 - Last Updated: 2026-09-12
 - Authority: Product vision, scope, and high-level product direction
-- Stage: M0 specification approved; implementation not started
+- Stage: M0 implemented and merged; F0 engineering proof delivered for acceptance
+
+## Approved file-oriented V1 direction (2026-09-14)
+
+First useful delivery: upload P6/MSP XML, explicitly choose an initial weighting
+method, and download a Progress Workbook (.xlsx). The application is free and
+file-oriented. Authentication, database/cloud Project persistence, Workspace UI,
+teams and billing are deferred. See the [Progress contract](docs/features/progress-contract.md)
+for approved initial weighting and Planned Budget input semantics.
+
+The earlier broad scope and M1–M9 sequence below are retained as future planning,
+not initial V1 prerequisites. DEC-001 BOQ timing is deferred; Activity Amount input
+comes first. DEC-003 applies when persisted Project creation is introduced.
+F0 is an isolated engineering proof; F1 requires Product Owner acceptance of F0
+and a separately approved delivery specification.
 
 ## Product direction
 
@@ -29,7 +43,7 @@ Planned schedule inputs are P6 XML and MSP XML. Native Microsoft Project
 Round-trip schedule export is not part of the initial import delivery;
 preserving identity does not constitute an export guarantee.
 
-### DEC-001 — BOQ creation in the initial version
+### DEC-001 — BOQ workbook approach (deferred beyond initial file V1)
 
 Users may upload an existing BOQ workbook. If they have none, Bluebird exports a
 standard workbook template, the user completes it externally, and uploads it.
@@ -50,7 +64,7 @@ Project setup should be practical and the visual identity recognizable.
 Detailed appearance options, reporting configuration, double-click dialogs,
 and navigation trees remain candidates.
 
-### DEC-003 — Minimal Project Creation (Approved, V1)
+### DEC-003 — Minimal Project Creation (future persisted Projects)
 
 Creating a Project requires only these two user-facing fields:
 
@@ -96,7 +110,7 @@ own authoritative homes under the [documentation map](docs/README.md).
 They are referenced here rather than copied into a growing all-purpose document.
 Product owners approve changes to product/business direction.
 
-## Roadmap — planning direction
+## Earlier M0–M9 roadmap — future planning, sequencing superseded
 
 This table retains M0–M9 as a high-level planning sequence, not authorization
 to implement all milestones.

@@ -41,6 +41,22 @@ Do not assume one Activity maps to exactly one BOQ item. Detailed Progress/BOQ/C
 mapping remains future design; no cardinality implementation or allocation
 formula is specified here.
 
+## Approved initial weighting and Activity Amount (2026-09-14)
+
+The user explicitly chooses Equal or Duration for initial XML generation.
+There is no default and no initial Amount option. Equal gives every eligible
+real activity equal basis; Duration uses an explicitly identified duration basis.
+Source-specific duration semantics, eligibility and calendar edge cases still
+need production acceptance; the F0 prototype policy is not product approval.
+
+Activity Amount means real Planned Budget allocated to an Activity, not Actual
+Cost, fabricated money, or an automatically approved EV BAC. Activity Amount is
+separate user-owned workbook input; its WBS, Activity ID and Activity Name derive
+from Main. Preserve hierarchy with outline/grouping. Blank is effective zero
+but remains distinguishable from explicit zero. Show missing/zero warnings.
+Amounts do not affect initial Equal/Duration weights. A later Amount transition
+requires its own approved recalculation/history contract.
+
 ## Unresolved business rules
 
 - Actual percentage semantics and allowed fields.
@@ -48,7 +64,7 @@ formula is specified here.
 - Monthly actual derivation from weekly updates.
 - Missing actuals, carry-forward, freshness, and report revision policy.
 - Reporting calendar/frequency and dates outside contract duration.
-- Weight selection/generation, source cost selection, and planned progress curve.
+- Duration source semantics/calendar validation, planned progress curve, and later Amount transition/history policy.
 - Schedule/re-import reconciliation and historical report reproducibility.
 
 These require product decisions before the relevant feature milestone.

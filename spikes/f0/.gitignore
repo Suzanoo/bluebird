@@ -1,0 +1,9 @@
+__pycache__/
+*.pyc
+# Generated workbooks and synthetic XML are reproducible outputs, not fixtures.
+evidence/*.xlsx
+evidence/*.xml
+
+# Local Python runtime/tooling
+.venv/
+*.egg-info/
