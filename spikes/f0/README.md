@@ -1,6 +1,11 @@
 # F0 isolated engineering proof
 
-Disposable Python 3.12 proof; not integrated into M0 or deployed. Run from repo root:
+Python 3.12 F0 proof. The A1 runtime adapter and minimal Next.js proof page are now
+delivered for review; deployed acceptance remains OPEN. See
+[the runtime procedure](acceptance/DEPLOYMENT_GATE.md) for the current integration,
+local commands and Preview checklist. The standalone engine commands below remain valid.
+
+Run from repo root:
 
 ```
 python -m pip install -r spikes/f0/requirements.txt

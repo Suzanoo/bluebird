@@ -1,0 +1,7 @@
+.form { max-width: 36rem; margin-top: 2rem; }
+.fields { border: 0; padding: 0; display: grid; gap: .8rem; }
+.fields label { font-weight: 600; }
+.fields input, .fields select { min-height: 44px; padding: .6rem; border: 1px solid var(--line); border-radius: 5px; background: white; width: 100%; }
+.fields button { margin-top: .8rem; cursor: pointer; }
+.fields:disabled { opacity: .7; }
+.error { color: #9f2424; }

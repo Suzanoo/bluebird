@@ -1,0 +1,38 @@
+{
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "fluid": true,
+  "services": {
+    "web": {
+      "root": ".",
+      "framework": "nextjs",
+      "devCommand": "next dev --hostname 127.0.0.1 --port $PORT"
+    },
+    "converter": {
+      "root": "spikes/f0",
+      "framework": "fastapi",
+      "entrypoint": "app:app",
+      "functions": {
+        "app.py": {
+          "maxDuration": 60,
+          "excludeFiles": "{.venv/**,*.egg-info/**,fixtures/**,acceptance/**,evidence/**,test_*.py,requirements-test.txt,benchmark.py,http_proof.py,**/__pycache__/**,**/*.xlsx}"
+        }
+      },
+      "installCommand": "python -m pip install -r requirements.txt",
+      "devCommand": "python -m uvicorn app:app --host 127.0.0.1 --port $PORT --no-access-log"
+    }
+  },
+  "rewrites": [
+    {
+      "source": "/api/f0/convert",
+      "destination": {
+        "service": "converter"
+      }
+    },
+    {
+      "source": "/(.*)",
+      "destination": {
+        "service": "web"
+      }
+    }
+  ]
+}

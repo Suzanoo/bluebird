@@ -2,7 +2,7 @@
 
 - Status: Review (delivery acceptance)
 - Scope authorization: Product Owner F0 prompt, 2026-09-14
-- Implementation: Isolated proof delivered; not production-ready; F1 not started
+- Implementation: Engine accepted; A1 runtime integration delivered for review; Preview gate OPEN; F1 not started
 - Authority: F0 scope and acceptance evidence
 
 ## Required reading
@@ -65,3 +65,23 @@ Deployment discovery also remains blocked: Vercel returned an empty teams array;
 no linked project or CLI token is available. These are access limitations, not
 proof that the Python runtime is unsuitable. The concrete next validation is
 in [DEPLOYMENT_GATE.md](../../spikes/f0/acceptance/DEPLOYMENT_GATE.md).
+
+## A1 runtime implementation handoff (2026-09-20)
+
+Product Owner approved one-project Next.js + Python, direct same-origin browser
+POST, no Next server proxy, experimental 4 MB upload and 60-second target.
+Git handoff and collaboration adoption are accepted at branch
+`feat/f0-file-workbook-proof`, HEAD `571abb9aadb75926ea944ddea856c9e90ed1db4e`.
+Earlier GitHub-access blockers above are historical, not current acceptance gates.
+
+Runtime adapter, minimal `/f0-runtime` page and Services config are delivered for
+review. The accepted engine/model/renderer are unchanged. Automated tests (22),
+Next lint/build and local Services HTTP checks pass. Local browser automation
+was blocked by test-environment capability. No deployment was performed.
+
+The selected gate is now browser on the Next.js page -> same-origin Vercel routing
+-> Python -> XLSX download, not a Next server relay. The actual Preview browser
+gate remains OPEN and requires Product Owner/Coordinator verification.
+[Deployment procedure and checklist](../../spikes/f0/acceptance/DEPLOYMENT_GATE.md)
+own reproduction/settings details. This handoff does not authorize Git writes,
+deployment, purchase or F1. Prior real XML/Desktop Excel acceptance remains PASS.
