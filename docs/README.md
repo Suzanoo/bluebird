@@ -1,8 +1,17 @@
 # Documentation map
 
 - Status: Approved
-- Last Updated: 2026-09-12
+- Last Updated: 2026-09-20
 - Authority: Documentation ownership, lifecycle, and reading rules
+
+## Collaboration entry points
+
+- [Coordinator Contract](COORDINATOR_CONTRACT.md) — roles, product discussion, acceptance briefing and Git authority
+- [Engineer Contract](ENGINEER_CONTRACT.md) — standing engineering boundaries
+- [Engineer Workflow](ENGINEER_WORKFLOW.md) — task execution and read order
+
+These Bluebird-owned documents implement the approved collaboration model;
+product, architecture and milestone authority remain in their existing homes.
 
 ## Current entry points
 
@@ -18,6 +27,10 @@
 
 | Home | Responsibility |
 | --- | --- |
+| docs/COORDINATOR_CONTRACT.md and docs/ENGINEER_CONTRACT.md | Roles, authority and standing collaboration boundaries |
+| docs/ENGINEER_WORKFLOW.md | Engineer execution procedure; not product requirements |
+| Accepted engineering notes (when present, linked by the relevant milestone) | Reusable accepted knowledge and baseline; reference canonical rules rather than redefine them |
+| Source code and tests | Current executable implementation evidence; not automatic product approval |
 | Root PROJECT_DESIGN.md | Product vision, scope, major direction, and high-level product decisions |
 | docs/brainstorm/ | Exploration only; never implementation authority |
 | docs/architecture/ | Current technical architecture and constraints |
@@ -69,13 +82,10 @@ Start with one document per capability, splitting only when useful, not per mile
 
 ## Reading strategy for future Work
 
-Normally read only:
-
-1. Applicable repository instructions, including AGENTS.md.
-2. This map.
-3. The current approved milestone.
-4. Product, feature, architecture, and ADR sections explicitly referenced there.
-5. Relevant code and tests to find existing patterns before making changes.
+Start with applicable repository instructions and this map, then follow the
+[Engineer Workflow read order](ENGINEER_WORKFLOW.md#2-discover-authority-before-implementation).
+Read accepted notes before fresh investigation and verify only relevant repository
+deltas. The current authorized task and its milestone determine the necessary scope.
 
 Each milestone must contain Required Reading with direct paths/sections.
 A Review-status specification is not implementation authorization.
