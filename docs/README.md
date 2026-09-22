@@ -1,7 +1,7 @@
 # Documentation map
 
 - Status: Approved
-- Last Updated: 2026-09-20
+- Last Updated: 2026-09-21
 - Authority: Documentation ownership, lifecycle, and reading rules
 
 ## Collaboration entry points
@@ -18,10 +18,12 @@ product, architecture and milestone authority remain in their existing homes.
 - [Product direction](../PROJECT_DESIGN.md)
 - [Architecture foundation](architecture/foundation.md)
 - [Workspace ownership ADR](architecture/decisions/ADR-001-workspace-ownership.md)
-- [Progress contract](features/progress-contract.md) — approved constraints; not implemented
+- [Progress contract](features/progress-contract.md) — current approved business rules; F0 proof accepted, production specification incomplete
 - [M0 specification](milestones/M0-application-foundation.md) — implemented and merged; historical acceptance evidence retained
 
-- [F0 proof and acceptance](milestones/F0-file-workbook-proof.md) — Desktop Excel accepted by Product Owner; deployed runtime gate outstanding
+- [F0 proof and acceptance](milestones/F0-file-workbook-proof.md) — accepted / closed per Product Owner; historical evidence retained
+
+- [Approved F1–F6 delivery sequence](milestones/file-workbook-roadmap.md) — sequence and milestone intent approved; detailed specifications and implementation authorization remain separate
 
 ## One authoritative home for each rule
 

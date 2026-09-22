@@ -1,9 +1,9 @@
 # Bluebird — Project Design
 
 - Status: Approved
-- Last Updated: 2026-09-12
+- Last Updated: 2026-09-21
 - Authority: Product vision, scope, and high-level product direction
-- Stage: M0 implemented and merged; F0 engineering proof delivered for acceptance
+- Stage: M0 merged; F0 accepted; F1–F6 sequence approved; F1 not started
 
 ## Approved file-oriented V1 direction (2026-09-14)
 
@@ -11,13 +11,37 @@ First useful delivery: upload P6/MSP XML, explicitly choose an initial weighting
 method, and download a Progress Workbook (.xlsx). The application is free and
 file-oriented. Authentication, database/cloud Project persistence, Workspace UI,
 teams and billing are deferred. See the [Progress contract](docs/features/progress-contract.md)
-for approved initial weighting and Planned Budget input semantics.
+for approved weighting and Activity Amount semantics.
 
 The earlier broad scope and M1–M9 sequence below are retained as future planning,
 not initial V1 prerequisites. DEC-001 BOQ timing is deferred; Activity Amount input
 comes first. DEC-003 applies when persisted Project creation is introduced.
-F0 is an isolated engineering proof; F1 requires Product Owner acceptance of F0
-and a separately approved delivery specification.
+F0 is accepted; its proof assumptions are not universal product rules. F1 still
+requires a separately approved delivery specification and explicit implementation
+authorization. The [approved F1–F6 sequence](docs/milestones/file-workbook-roadmap.md)
+owns delivery order and milestone intent; the older sequence below is superseded.
+
+## Accepted product alignment (2026-09-21)
+
+The Product Owner approved Landing concept A (Clear Blue): retain Home as app
+presentation, followed by the Create workflow. The user journey is
+Landing → Upload P6/MSP XML → Configure → Generate → Download Progress Workbook.
+The target users are construction engineers/planners preparing progress workbooks
+for normal Desktop Excel use. The target workbook outcome follows Progress Studio,
+delivered incrementally; it is not limited to the F0 proof output.
+
+Earned Value and Payment remain in the approved delivery direction. Financial
+Forecast is excluded. Reuse Progress Studio workbook themes; defer the Theme Editor.
+Web branding and workbook styling are separate concerns. Concept imagery is a
+layout reference, not approval of every illustrated field or feature.
+
+Create configuration includes Weighting, Weekly Cutoff Day and Plan Distribution.
+Their business semantics and unresolved defaults belong to the
+[Progress contract](docs/features/progress-contract.md). No new persisted Project,
+account, database or cloud storage is required by these controls.
+
+Approval of this direction and milestone order does not approve unresolved
+edge-case policies, implementation details or immediate execution of F1.
 
 ## Product direction
 
@@ -29,40 +53,45 @@ or a full ERP.
 **Document Management is currently out of scope**, including RFI, submittals,
 drawing/document control, transmittals, NCR, safety, and photo management.
 
-Progress is the first delivery focus. Detailed Cost capabilities and the exact
-V1 Progress/Cost boundary remain TBD. Future candidates are not approved modules.
+Progress is the first delivery focus. EV and Payment follow in the approved
+file-workbook sequence; their detailed contracts remain to be specified.
+Other Cost candidates are not approved modules; Financial Forecast is excluded.
 
 ## Product scope
 
-The planned product includes project creation/configuration, schedule ingestion,
-progress weighting, a Progress Dashboard, native Actual Progress entry, and
-weekly/monthly reporting. Output formats and detailed calculations remain TBD.
+The file-oriented product delivers schedule ingestion, progress weighting,
+workbook Actual inputs, weekly/monthly workbook reporting and a workbook Dashboard,
+followed by the capabilities in the approved delivery sequence. XLSX is the output;
+detailed calculation and output contracts remain subject to feature specifications.
+Persisted project creation/configuration and web-native progress management remain
+future scope, not prerequisites for the initial file workflow.
 
 Planned schedule inputs are P6 XML and MSP XML. Native Microsoft Project
 `.mpp` support remains a feasibility/scope question, not a V1 commitment.
 Round-trip schedule export is not part of the initial import delivery;
 preserving identity does not constitute an export guarantee.
 
-### DEC-001 — BOQ workbook approach (deferred beyond initial file V1)
+### DEC-001 — BOQ workbook approach (after core Progress; see F4)
 
 Users may upload an existing BOQ workbook. If they have none, Bluebird exports a
 standard workbook template, the user completes it externally, and uploads it.
 A native BOQ editor is excluded initially to keep the delivery focused.
 BOQ must not block useful Progress operation.
 
-Payment, Earned Value, a BOQ Dashboard, and native BOQ management remain future
-possibilities requiring separate design. No detailed Cost module list is approved.
+Earned Value and Payment are sequenced in the approved roadmap and still require
+separate detailed specifications. A BOQ Dashboard and native BOQ management remain
+future possibilities, not approved initial capabilities.
 
 ## Workflow and UX
 
-Conceptual flow, not a fixed screen sequence:
+Earlier persisted-project concept only; not the current file workflow:
 
 Create Project → Configure Project → Import Schedule → Resolve Progress Weighting
 → Progress Dashboard / Native Progress Update → BOQ / Mapping.
 
-Project setup should be practical and the visual identity recognizable.
-Detailed appearance options, reporting configuration, double-click dialogs,
-and navigation trees remain candidates.
+The current file workflow and Landing direction are defined above. Detailed
+appearance controls beyond the reused workbook theme remain deferred; desktop
+dialogs and navigation trees are not automatically web requirements.
 
 ### DEC-003 — Minimal Project Creation (future persisted Projects)
 
@@ -87,8 +116,7 @@ For ownership and identity, use the
 
 ## Open product questions
 
-- Problem statement, target user/customer segments, and value proposition.
-- Exact V1 boundary and first Cost capability.
+- Detailed output parity/acceptance for each milestone in the approved sequence.
 - Detailed validation of Project Name/Code and Project Configuration fields;
   the two required creation fields are settled by DEC-003.
 - Detailed BOQ template/validation and mapping workflow.
@@ -139,3 +167,7 @@ replaced generated-amount wording with the referenced weighting contract;
 separated authoritative technical/business rules from product direction;
 retained the BOQ workbook decision; replaced the original bootstrap acceptance
 section with a link to the distinct M0 specification.
+
+2026-09-21: recorded PO-approved Landing A, PS workbook direction including EV/Payment,
+Financial Forecast exclusion and Create configuration; linked the approved delivery
+sequence and canonical Progress semantics. No implementation authorization granted.

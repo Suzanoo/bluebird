@@ -1,9 +1,24 @@
 # F0 — File workflow / runtime / workbook proof
 
-- Status: Review (delivery acceptance)
+- Status: Approved — accepted / closed
 - Scope authorization: Product Owner F0 prompt, 2026-09-14
-- Implementation: Engine accepted; A1 runtime integration delivered for review; Preview gate OPEN; F1 not started
+- Implementation: Engineering, real XML, Desktop Excel and deployed workflow accepted by Product Owner; F1 not started
 - Authority: F0 scope and acceptance evidence
+
+## Current accepted state — recorded 2026-09-21
+
+The Product Owner confirmed F0 completion, including deployed file-to-workbook,
+real MSP/P6 XML and Desktop Excel acceptance, at accepted main baseline
+`31f235a43c08c9a0c34bcdc29bc9b220872bcf03` and reported stable tag
+`f0-file-workbook-proof-stable`. This is PO-reported acceptance; this documentation
+update did not rerun those gates or independently verify the deployment/tag.
+
+Earlier OPEN/CONDITIONAL PASS/access-blocker statements below are historical
+handoff evidence, not outstanding gates. Preserve them as the record of what was
+known at delivery. Proof appearance remains accepted. Later product semantics
+are owned by the [Progress contract](../features/progress-contract.md), not by
+historical F0 wording. The [F1–F6 sequence](file-workbook-roadmap.md) is approved;
+F1 implementation remains unauthorized.
 
 ## Required reading
 
@@ -11,7 +26,7 @@
 - ../README.md — authority rules
 - ../architecture/foundation.md — identity and adapter boundaries
 - ../architecture/decisions/ADR-001-workspace-ownership.md — future scope
-- ../features/progress-contract.md — initial weighting and Planned Budget
+- ../features/progress-contract.md — current weighting and Activity Amount semantics
 - ../../spikes/f0/README.md — reproducible proof and limitations
 
 ## Scope and evidence
