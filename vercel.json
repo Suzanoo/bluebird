@@ -23,6 +23,10 @@
   },
   "rewrites": [
     {
+      "source": "/api/progress/convert",
+      "destination": { "service": "converter" }
+    },
+    {
       "source": "/api/f0/convert",
       "destination": {
         "service": "converter"

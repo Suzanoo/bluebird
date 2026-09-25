@@ -1,0 +1,33 @@
+.layout { display: grid; grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr); gap: 3rem; align-items: start; }
+.form { padding: 2rem; border: 1px solid var(--line); border-radius: 14px; background: white; box-shadow: 0 12px 40px #17365d08; }
+.fields { display: flex; flex-direction: column; gap: .8rem; padding: 0; margin: 0; border: 0; min-width: 0; }
+.fields legend { font-size: 1.25rem; font-weight: 600; margin-bottom: 1.5rem; }
+.fields label { display: block; font-weight: 600; }
+.fields input, .fields select { width: 100%; min-width: 0; padding: .85rem; min-height: 48px; font: inherit; background: #f8fbff; color: var(--foreground); border: 1px solid #b8c8dc; border-radius: 6px; }
+.fields input[type=file] { padding: 1.5rem .8rem; border-style: dashed; }
+.fields input::file-selector-button { padding: .5rem .8rem; margin-right: .7rem; border: 0; border-radius: 4px; background: #dce8fc; color: #17499f; font: inherit; cursor: pointer; }
+.fields button { font: inherit; font-weight: 600; border: 0; cursor: pointer; margin-top: .8rem; }
+.fields:disabled { opacity: .65; }
+.fields :focus-visible { outline: 3px solid var(--accent); outline-offset: 3px; }
+.config { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-top: .7rem; }
+.config label { margin-bottom: .6rem; }
+.small { color: var(--muted); font-size: .85rem; margin: 0 0 .75rem; }
+.required { font-size: .7rem; color: var(--muted); font-weight: 400; margin-left: .5rem; }
+.help { padding-block: .6rem; color: var(--muted); }
+.help h2 { margin-top: 0; font-size: 1.55rem; letter-spacing: -.03em; color: var(--foreground); }
+.help h3 { margin: 1.8rem 0 .5rem; font-size: 1rem; color: var(--foreground); }
+.help ul { padding-left: 1.2rem; }
+.help li { padding-block: .3rem; }
+.help p { margin: .6rem 0; }
+.error { padding: 1rem; color: #8b1d1d; background: #fff1f1; border-left: 3px solid #b52525; overflow-wrap: anywhere; }
+.result { padding: 1rem; background: #eef6ff; border-radius: 6px; }
+.result p { margin: .5rem 0; font-size: .9rem; }
+.presentation { border: 1px solid #d6e4f5; border-radius: 18px; background: linear-gradient(145deg, #fff, #eaf3ff); padding: 2rem; box-shadow: 0 20px 70px #225bd210; }
+.presentation h2 { font-size: 1.9rem; line-height: 1.2; letter-spacing: -.04em; margin: 1rem 0 2rem; }
+.steps { margin: 0 0 2rem; padding: 0; list-style: none; }
+.steps li { display: flex; gap: 1rem; padding-block: .8rem; }
+.steps li > span { color: var(--accent); font-size: .8rem; font-weight: 700; padding-top: .2rem; }
+.steps p { margin: .25rem 0; color: var(--muted); font-size: .9rem; }
+@media (max-width: 900px) { .layout { grid-template-columns: 1fr; gap: 1.5rem; } }
+@media (max-width: 520px) { .config { grid-template-columns: 1fr; } .form, .presentation { padding: 1.3rem; } }
+@media (forced-colors: active) { .fields button, .result { border: 1px solid ButtonText; } }

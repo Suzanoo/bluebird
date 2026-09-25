@@ -5,7 +5,7 @@ import "./globals.css";
 
 export const metadata: Metadata = {
   title: { default: "Bluebird", template: "%s | Bluebird" },
-  description: "Bluebird construction management — application preview.",
+  description: "Turn P6 or MSP XML into a Progress Workbook for Desktop Excel.",
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
@@ -27,7 +27,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
         </main>
         <footer className="site-footer">
           <span>Bluebird</span>
-          <span>Application preview · No project data</span>
+          <span>File in. Workbook out. No cloud project storage.</span>
         </footer>
       </body>
     </html>
