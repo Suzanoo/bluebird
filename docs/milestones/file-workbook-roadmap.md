@@ -3,7 +3,7 @@
 - Status: Approved sequence and milestone intent; detailed specifications pending
 - Last Updated: 2026-09-21
 - Authority: Delivery order and milestone boundaries; not business-rule ownership
-- Implementation: F0 accepted; F1–F6 not started; no implementation authorized
+- Implementation: F0 accepted; F1 authorized 2026-09-23; F2–F6 not started/unauthorized
 - Decision source: PO Acceptance of Revised Milestone Proposal, 2026-09-21
 
 ## Required reading
@@ -55,3 +55,10 @@ Keep automated tests, artifact checks, Desktop Excel lifecycle, deployed browser
 workflow and PO acceptance separate. Prior F0 acceptance stays closed; changed
 rendering/calculation behavior needs its own relevant acceptance. Nothing in this
 sequence authorizes Git operations or deployment.
+
+## F1 authorization update — 2026-09-23
+
+PO accepted the [F1 specification](F1-core-progress-workbook.md) and authorized F1 only.
+The Progress contract owns final defaults, strict Duration and Live Rebuild
+Dashboard Actual display. Earlier pending-authorization statements are historical.
+F2–F6, Git operations and deployment remain unauthorized.

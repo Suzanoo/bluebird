@@ -3,7 +3,7 @@
 - Status: Approved
 - Last Updated: 2026-09-21
 - Authority: Product vision, scope, and high-level product direction
-- Stage: M0 merged; F0 accepted; F1–F6 sequence approved; F1 not started
+- Stage: M0 merged; F0 accepted; F1 authorized; F2–F6 sequence approved, not started
 
 ## Approved file-oriented V1 direction (2026-09-14)
 
@@ -16,9 +16,9 @@ for approved weighting and Activity Amount semantics.
 The earlier broad scope and M1–M9 sequence below are retained as future planning,
 not initial V1 prerequisites. DEC-001 BOQ timing is deferred; Activity Amount input
 comes first. DEC-003 applies when persisted Project creation is introduced.
-F0 is accepted; its proof assumptions are not universal product rules. F1 still
-requires a separately approved delivery specification and explicit implementation
-authorization. The [approved F1–F6 sequence](docs/milestones/file-workbook-roadmap.md)
+F0 is accepted; its proof assumptions are not universal product rules. F1 now has
+an approved delivery specification and explicit implementation authorization
+(2026-09-23). The [approved F1–F6 sequence](docs/milestones/file-workbook-roadmap.md)
 owns delivery order and milestone intent; the older sequence below is superseded.
 
 ## Accepted product alignment (2026-09-21)
@@ -171,3 +171,10 @@ section with a link to the distinct M0 specification.
 2026-09-21: recorded PO-approved Landing A, PS workbook direction including EV/Payment,
 Financial Forecast exclusion and Create configuration; linked the approved delivery
 sequence and canonical Progress semantics. No implementation authorization granted.
+
+## F1 authorization update — 2026-09-23
+
+PO accepted the [F1 specification](docs/milestones/F1-core-progress-workbook.md) and authorized F1 only.
+The Progress contract owns final defaults, strict Duration and Live Rebuild
+Dashboard Actual display. Earlier pending-authorization statements are historical.
+F2–F6, Git operations and deployment remain unauthorized.

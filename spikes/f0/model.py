@@ -23,8 +23,8 @@ class Activity:
     source_id: str
     name: str
     wbs: str | None
-    start: date
-    finish: date
+    start: date | None
+    finish: date | None
     duration_hours: float | None
     duration_field: str
     duration_raw: str
@@ -76,7 +76,7 @@ def parse_xml(raw):
         n.tag = n.tag.rsplit('}', 1)[-1]
     return root
 
-def normalize(root, raw, import_id=None, msp_activity_id_field=None):
+def normalize(root, raw, import_id=None, msp_activity_id_field=None, *, production=False):
     iid = import_id or str(uuid4())
     def key(kind, source): return str(uuid5(UUID(iid), kind + ':' + source))
     msp = root.tag == 'Project' and root.find('Tasks') is not None
@@ -137,9 +137,13 @@ def normalize(root, raw, import_id=None, msp_activity_id_field=None):
         identity = 'object:' + obj if obj else 'id:' + sid
         if identity in seen: raise ValueError('Ambiguous duplicate source identity')
         seen.add(identity)
-        start = date.fromisoformat(value(a, 'Start' if msp else 'PlannedStartDate')[:10])
-        finish = date.fromisoformat(value(a, 'Finish' if msp else 'PlannedFinishDate')[:10])
-        if finish < start: raise ValueError('Finish before start')
+        def source_date(field):
+            text = value(a, field)
+            if production and not text: return None
+            return date.fromisoformat(text[:10])
+        start = source_date('Start' if msp else 'PlannedStartDate')
+        finish = source_date('Finish' if msp else 'PlannedFinishDate')
+        if start and finish and finish < start: raise ValueError('Finish before start')
         field = 'Duration' if msp else 'PlannedDuration'
         dur = value(a, field)
         hours = None
@@ -156,7 +160,9 @@ def normalize(root, raw, import_id=None, msp_activity_id_field=None):
         # Microsoft DurationFormat: 3/5/7/9/11 are working units. Even
         # 4/6/8/10/12 are elapsed. Estimated/percent/unknown remain unsupported.
         duration_format = value(a, 'DurationFormat') or (value(p, 'DurationFormat') if msp else '')
-        if msp and (duration_format not in ('3','5','7','9','11') or value(a, 'Manual') == '1'):
+        # F0's format gate remains historical proof behavior. PS MS-1 production
+        # policy reads the explicit ISO Duration, independent of display format.
+        if not production and msp and (duration_format not in ('3','5','7','9','11') or value(a, 'Manual') == '1'):
             hours = None
         activities.append(Activity(key('activity', identity), obj or None, sid, value(a, 'Name'), wk, start, finish, hours, field, dur, value(a, 'CalendarUID' if msp else 'CalendarObjectId'), milestone, value(a, 'ID') if msp else '', ('ExtendedAttribute:' + msp_activity_id_field if msp_activity_id_field else 'ID') if msp else 'Id', duration_format, value(a, 'Status') if not msp else '', value(a, 'Type'), value(a, 'Start' if msp else 'PlannedStartDate'), value(a, 'Finish' if msp else 'PlannedFinishDate')))
     return Schedule(iid, sha256(raw).hexdigest(), 'MSP' if msp else 'P6', value(p, 'UID' if msp else 'ObjectId') or value(p, 'Id') or value(p, 'Name'), tuple(wbs), tuple(activities), tuple((k, value(p,k)) for k in ('UID','Id','ObjectId','GUID','Name') if value(p,k)))

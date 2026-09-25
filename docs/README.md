@@ -18,7 +18,8 @@ product, architecture and milestone authority remain in their existing homes.
 - [Product direction](../PROJECT_DESIGN.md)
 - [Architecture foundation](architecture/foundation.md)
 - [Workspace ownership ADR](architecture/decisions/ADR-001-workspace-ownership.md)
-- [Progress contract](features/progress-contract.md) — current approved business rules; F0 proof accepted, production specification incomplete
+- [Progress contract](features/progress-contract.md) — approved F1 business rules; later capabilities partial
+- [F1 Core Progress Workbook](milestones/F1-core-progress-workbook.md) — approved and authorized; engineering handoff/acceptance tracked separately
 - [M0 specification](milestones/M0-application-foundation.md) — implemented and merged; historical acceptance evidence retained
 
 - [F0 proof and acceptance](milestones/F0-file-workbook-proof.md) — accepted / closed per Product Owner; historical evidence retained
@@ -104,3 +105,10 @@ Goal: minimum necessary context, one source of truth, no repeated documentation.
 [Original Bluebird brainstorm](brainstorm/BLUEBIRD_BRAINSTORM.md) preserves
 pre-consolidation ideas and review instructions. Its internal "Agreed" labels
 do not override the current canonical documents.
+
+## F1 authorization update — 2026-09-23
+
+PO accepted the [F1 specification](milestones/F1-core-progress-workbook.md) and authorized F1 only.
+The Progress contract owns final defaults, strict Duration and Live Rebuild
+Dashboard Actual display. Earlier pending-authorization statements are historical.
+F2–F6, Git operations and deployment remain unauthorized.
