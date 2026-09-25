@@ -1,10 +1,7 @@
 # F1 — Core Progress Workbook and Landing A
 
-- Status: Approved specification; implementation authorized by PO 2026-09-23
-- Authority: Scope and acceptance; business rules in Progress contract
-- Baseline: main d965b7b43f5bfc06bc9a8f1e9d9bb1e37970d10a
-- Reference: PS 89a6b80c06b986c4ec412b2717dc3e248a3537ec
-- Implementation: Engineering handoff delivered; automated checks passed; PO acceptance pending
+- Status: F1 implementation and Windows Desktop Excel lifecycle accepted by PO 2026-09-25; closure recorded
+- Implementation: F1 + cumulative R2 integrated at f37fbde; PO acceptance confirmed
 
 ## Required reading
 
@@ -76,3 +73,45 @@ isolate the line-fill delta; this does not prove Excel compatibility. Desktop
 Excel Gate remains FAIL pending PO first-open and Save/Close/Reopen retest.
 Round 2 handoff is self-contained relative to the original F1 handoff. No Git
 operation, deployment or new product decision was performed.
+
+## F1 PO Acceptance and Closure — 2026-09-25
+
+Repository: Suzanoo/bluebird
+Branch: feat/f1-core-progress-workbook
+Accepted implementation: f37fbde
+Baseline: main d965b7b
+
+### Automated verification
+
+- Mac Python 3.12: 46 tests PASS.
+- Windows Python 3.12: 46 tests PASS.
+- Next.js lint/build: PASS, reported during Mac integration.
+- Local conversion HTTP 200: PASS, reported during Mac integration.
+
+### Windows Desktop Excel — PO Accepted
+
+- First Open: PASS, no Repair Warning.
+- Planned S-Curve display: PASS.
+- Recalculation: PASS.
+- Weekly Actual updates Project Actual and chart: PASS.
+- Monthly aggregation: PASS.
+- Dashboard Planned/Actual consistency: PASS.
+- Save/Close/Reopen after Actual entry: PASS.
+
+### Compatibility observation
+
+Excel for Mac displayed chart frames but not the plotted curve.
+The same retest workbook displayed the curve in Windows Excel.
+The Mac installation showed an Office activation notice.
+Root cause remains unverified.
+
+### Closure boundaries
+
+F1 Windows Desktop Excel acceptance is complete.
+
+Deployed browser acceptance is not established by this record.
+Financial Forecast, F2–F6, deployment and release remain outside
+this closure.
+
+The earlier R1/R2 investigation results remain as historical evidence.
+This acceptance record supersedes their pending Desktop Excel gate status.
