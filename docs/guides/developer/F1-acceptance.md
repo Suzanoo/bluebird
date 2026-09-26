@@ -1,6 +1,6 @@
 # F1 engineering handoff and acceptance
 
-- Status: Engineering delivery; Desktop Excel, deployed browser and PO gates OPEN
+- Status: Original F1 Windows Excel acceptance recorded in milestone; overlay change awaits PO retest
 - Baseline: main d965b7b43f5bfc06bc9a8f1e9d9bb1e37970d10a
 - Scope: [F1 milestone](../../milestones/F1-core-progress-workbook.md)
 - Business rules: [Progress contract](../../features/progress-contract.md)
@@ -64,7 +64,29 @@ adapter, including catchable-failure cleanup and hard-termination limitations.
    No server rebuild is required for weekly Actual. Arbitrary Plan/row edits are
    not supported by F1. No Amount weighting/apply action is supplied.
 
-## Preview — only after separate authorization
+## Post-merge overlay check — 2026-09-25
+
+Baseline b7bbee2 is accepted. This is a focused regression gate for the authorized
+Main/Monthly placement change, not reopening original F1 acceptance.
+
+- Both frames start at N5 and span their own period columns through the row
+  before the four-row S-Curve summary; headers/cutoff controls stay outside.
+- Chart and plot backgrounds are transparent; Dashboard is unchanged.
+- Check short and representative schedules, WBS collapse/expand, scrolling and
+  ordinary row/column resizing. Confirm weekly Actual cells remain usable
+  (including selection by keyboard/name box when a chart intercepts a click).
+- Enter Actual including a gap and explicit zero; F9 and change cutoffs. Verify
+  Monthly/Dashboard and all five chart series/markers remain correct.
+- Save/Close/Reopen in Windows Desktop Excel: no repair, no lost charts or
+  transparency. Record version and result. Native Excel acceptance is not
+  established by openpyxl reload/save tests.
+
+Renderer `apply_timescale_overlay` may be reapplied after a Python workbook
+reload because openpyxl drops plot-area styling. No new refresh workflow is
+introduced. Outer-frame alignment does not promise pixel-perfect date-to-column
+alignment; accepted DateAxis/series semantics are unchanged.
+
+## Preview procedure — only after separate authorization
 
 Coordinator integrates accepted changed files against the exact baseline, or
 reviews a newer baseline delta. Git push may trigger deployment: obtain appropriate

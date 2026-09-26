@@ -62,17 +62,37 @@ def check_package(case, raw):
         for name in charts:
             case.assertEqual(types[name], 'application/vnd.openxmlformats-officedocument.drawingml.chart+xml')
             check_axes(case, ET.fromstring(package.read(name)))
+        # Resolve ownership through package relationships, not drawing numbering.
+        def target(base, value):
+            return value.lstrip('/') if value.startswith('/') else posixpath.normpath(posixpath.join(base, value))
+        bookrels = {n.get('Id'): target('xl', n.get('Target')) for n in
+                    ET.fromstring(package.read('xl/_rels/workbook.xml.rels'))}
+        drawing_sheets = {}
+        for sheet in ET.fromstring(package.read('xl/workbook.xml')).findall('.//{http://schemas.openxmlformats.org/spreadsheetml/2006/main}sheet'):
+            part = bookrels[sheet.get(f'{{{R}}}id')]
+            relpath = posixpath.dirname(part) + '/_rels/' + posixpath.basename(part) + '.rels'
+            if relpath in names:
+                for rel in ET.fromstring(package.read(relpath)):
+                    if rel.get('Type').endswith('/drawing'):
+                        drawing_sheets[target(posixpath.dirname(part), rel.get('Target'))] = sheet.get('name')
         for name in drawings:
             case.assertEqual(types[name], 'application/vnd.openxmlformats-officedocument.drawing+xml')
             root = ET.fromstring(package.read(name))
             case.assertEqual(len(root), 1)
             anchor = root[0]
-            case.assertEqual(anchor.tag, f'{{{XDR}}}oneCellAnchor')
+            expected = 'oneCellAnchor' if drawing_sheets[name] == 'Dashboard' else 'twoCellAnchor'
+            case.assertEqual(anchor.tag, f'{{{XDR}}}{expected}')
             for coordinate in ('col', 'row', 'colOff', 'rowOff'):
                 case.assertGreaterEqual(int(anchor.find(f'{{{XDR}}}from/{{{XDR}}}{coordinate}').text), 0)
-            ext = anchor.find(f'{{{XDR}}}ext')
-            case.assertGreater(int(ext.get('cx')), 0)
-            case.assertGreater(int(ext.get('cy')), 0)
+            if expected == 'oneCellAnchor':
+                ext = anchor.find(f'{{{XDR}}}ext')
+                case.assertGreater(int(ext.get('cx')), 0)
+                case.assertGreater(int(ext.get('cy')), 0)
+            else:
+                case.assertEqual(anchor.get('editAs'), 'twoCell')
+                for coordinate in ('col', 'row'):
+                    case.assertGreater(int(anchor.find(f'{{{XDR}}}to/{{{XDR}}}{coordinate}').text),
+                                       int(anchor.find(f'{{{XDR}}}from/{{{XDR}}}{coordinate}').text))
             frame = anchor.find(f'{{{XDR}}}graphicFrame')
             case.assertIsNotNone(frame.find(f'{{{XDR}}}xfrm'))
             ref = frame.find(f'.//{{{C}}}chart').get(f'{{{R}}}id')
