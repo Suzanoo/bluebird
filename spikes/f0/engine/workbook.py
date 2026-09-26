@@ -17,6 +17,8 @@ from openpyxl.chart.axis import DateAxis
 from openpyxl.chart.error_bar import ErrorBars
 from openpyxl.chart.label import DataLabelList
 from openpyxl.chart.shapes import GraphicalProperties
+from openpyxl.drawing.line import LineProperties
+from openpyxl.drawing.spreadsheet_drawing import AnchorMarker, TwoCellAnchor
 from openpyxl.styles import Alignment, Border, Font, PatternFill, Protection, Side
 from openpyxl.formatting.rule import FormulaRule
 from openpyxl.worksheet.datavalidation import DataValidation
@@ -311,6 +313,22 @@ def chart(data, date_col, plan_col, actual_col, marker_plan, marker_actual, line
     return ch
 
 
+def apply_timescale_overlay(ch, period_count, scurve):
+    """PS responsive-anchor/transparency pattern, confined to the XLSX adapter.
+
+    End markers are exclusive: cover N5 through the last period / scurve-1.
+    Reapply after a Python load/save if needed; openpyxl drops plot-area styling
+    on reload. This changes no series, axis, helper source or worksheet cell.
+    """
+    if period_count < 1 or scurve <= 5:
+        raise ValueError('Overlay requires a nonempty timescale and schedule body')
+    ch.anchor = TwoCellAnchor(editAs='twoCell',
+        _from=AnchorMarker(col=FIRST-1, row=4),
+        to=AnchorMarker(col=FIRST-1+period_count, row=scurve-1))
+    ch.graphical_properties = GraphicalProperties(noFill=True, ln=LineProperties(noFill=True))
+    ch.plot_area.graphicalProperties = GraphicalProperties(noFill=True, ln=LineProperties(noFill=True))
+
+
 def write_dashboard(wb, main, monthly, periods, months, scurve):
     progress = wb.create_sheet('progress')
     progress.append(['Date', 'Plan', 'Actual'])
@@ -395,8 +413,10 @@ def write_dashboard(wb, main, monthly, periods, months, scurve):
             data.cell(n, offset+3, f'=IF({dc}{n}={anchor},{pc}{n},NA())')
             data.cell(n, offset+4, f'=IF(AND({dc}{n}={anchor},COUNTIFS($J$2:$J${last},"<="&{dc}{n},$C$2:$C${last},"<>")>0),{ac}{n},NA())')
             data.cell(n, offset+5, f'=IF({dc}{n}={anchor},1,NA())')
-        ws.add_chart(chart(data, offset, offset+1, offset+2, offset+3, offset+4, offset+5,
-                           len(points)+1, ws.title+' S-curve'), f'B{scurve+6}')
+        overlay = chart(data, offset, offset+1, offset+2, offset+3, offset+4, offset+5,
+                        len(points)+1, ws.title+' S-curve')
+        apply_timescale_overlay(overlay, len(points), scurve)
+        ws.add_chart(overlay)
 
 
 def render(schedule, settings, prepared):
