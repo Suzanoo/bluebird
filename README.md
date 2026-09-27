@@ -3,8 +3,11 @@
 Start with [Project Design](PROJECT_DESIGN.md) for product direction and the
 [documentation map](docs/README.md) to find authoritative rules and the current task.
 
-M0 and F0 are accepted. [F1](docs/milestones/F1-core-progress-workbook.md) adds the
-Create workflow and core Progress Workbook; its PO acceptance gates remain open.
+M0, F0 and [F1](docs/milestones/F1-core-progress-workbook.md) are accepted.
+[F2](docs/milestones/F2-xml-amount-weighting.md) adds explicit XML Amount selection
+and weighting; its new PO acceptance gates remain open. See the
+[F2 acceptance guide](docs/guides/developer/F2-acceptance.md) for integration,
+preview/Generate tests and Windows Desktop Excel steps.
 See the [F1 acceptance guide](docs/guides/developer/F1-acceptance.md) for full local
 Python + Next.js operation. Next.js alone does not serve the converter endpoint.
 

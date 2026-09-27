@@ -18,7 +18,9 @@ export default function CreatePage() {
           <h3>Choose a weighting method</h3>
           <p><strong>Equal</strong> gives each ordinary activity the same influence.</p>
           <p><strong>Duration</strong> uses source working hours. Missing or invalid durations must be corrected; no automatic fallback.</p>
-          <p>Milestones have zero Progress Weight. Entered Activity Amount is allocated Contract Value and does not affect these methods.</p>
+          <p><strong>Amount</strong> uses an explicitly selected and validated XML numeric field for allocated Contract Value. Inspect and validate it before choosing Amount. Missing ordinary amounts block generation.</p>
+          <p>Milestones have zero Progress Weight. Activity Amount is allocated Contract Value and does not affect Equal or Duration.</p>
+          <p>Amount creation retains milestone Contract Value but excludes it from progress weights. Later workbook Amount edits do not reapply weights; Apply/Refresh is not available yet.</p>
           <h3>Your files stay yours</h3>
           <p>XML is processed for this request, not saved as a cloud project. Download and keep the workbook locally. No account is needed.</p>
           <p className={styles.small}>Current limits: 4 MB XML, 2,000 activities, 260 reporting weeks and 4 MB output. The runtime target is 60 seconds, not a guaranteed completion time.</p>

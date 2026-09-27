@@ -13,6 +13,14 @@
 .config label { margin-bottom: .6rem; }
 .small { color: var(--muted); font-size: .85rem; margin: 0 0 .75rem; }
 .required { font-size: .7rem; color: var(--muted); font-weight: 400; margin-left: .5rem; }
+.amount { border: 1px solid var(--line); padding: 1rem; border-radius: 6px; }
+.amount summary { cursor: pointer; font-weight: 600; margin-bottom: .8rem; }
+.amount button { padding: .65rem; margin-bottom: .8rem; }
+.amount button:disabled { opacity: .5; cursor: not-allowed; }
+.warning { padding: 1rem 1.5rem; background: #fff5d9; color: #634b06; overflow-wrap: anywhere; }
+.previewTable { overflow: auto; max-height: 20rem; font-size: .8rem; }
+.previewTable table { border-collapse: collapse; width: 100%; }
+.previewTable th, .previewTable td { padding: .5rem; text-align: left; border-bottom: 1px solid var(--line); overflow-wrap: anywhere; }
 .help { padding-block: .6rem; color: var(--muted); }
 .help h2 { margin-top: 0; font-size: 1.55rem; letter-spacing: -.03em; color: var(--foreground); }
 .help h3 { margin: 1.8rem 0 .5rem; font-size: 1rem; color: var(--foreground); }

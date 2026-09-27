@@ -1,9 +1,9 @@
 # Progress — foundational business contract
 
 - Status: Approved
-- Last Updated: 2026-09-23
+- Last Updated: 2026-09-26
 - Authority: Approved reporting, progress-history, and weighting semantics
-- Implementation: F0 accepted; F1 specification accepted and engineering authorized; acceptance pending
+- Implementation: F0/F1 accepted; F2 authorized, engineering/PO acceptance tracked separately
 
 This is a partial contract, not a complete Progress feature specification.
 [Project Design](../../PROJECT_DESIGN.md) owns product scope; the
@@ -45,7 +45,7 @@ formula is specified here.
 
 F1 initial XML generation requires an explicit Equal or Duration choice, with no
 default. Amount is sequenced for F2, not part of F1. F2 uses explicit XML numeric
-field selection with preview/validation; detailed readiness policies remain TBD.
+field selection with preview/validation; the F2 rules below now own readiness.
 Equal gives eligible ordinary activities equal basis; Duration uses an explicitly
 identified duration basis.
 Production duration semantics are now owned by the F1 final specification below.
@@ -86,8 +86,8 @@ accepted rules; do not inherit unrelated Progress Studio desktop defaults.
 
 - Future historical snapshot correction/reopening and report revision policy
   beyond F1's local workbook corrections; F1 rules are closed below.
-- F2 Amount readiness (missing/partial/zero/invalid values and zero total), currency,
-  numeric precision and source-field support; no implicit fallback policy.
+- Future currency conversion or monetary reconciliation beyond F2; F2 assumes
+  user-selected allocated Contract Value on a consistent monetary basis.
 - Monetary treatment of retained milestone Contract Value in totals/EV/BOQ.
 - F3 Amount transition/recalculation/history policy.
 - Schedule/re-import reconciliation and historical report reproducibility.
@@ -151,6 +151,45 @@ restructuring and server refresh remain outside F1.
 
 ### Future-only TBDs
 
-F2 Amount readiness/currency/precision/source field support; F3 transition,
+Future currency conversion; F3 transition,
 reconciliation/history; monetary milestone treatment in EV/BOQ. F1 approval does
 not settle all later capabilities.
+
+
+## F2 XML Amount weighting — PO authorized 2026-09-26
+
+Reference: Progress Studio MS-2 `89a6b80`, docs/WEIGHT_SELECTION.md and
+services/xml_amount_service.py, adapted to separate money from progress basis.
+The PO explicitly approved **Policy A — strict milestone Contract Value import**.
+
+- Weighting stays explicit with no default. Equal/Duration remain unchanged.
+- Amount requires explicit selection and validated preview of a declared numeric
+  XML field. P6 Activity UDF Double/Integer/Cost uses TypeObjectId and the matching
+  value element; MSP numeric custom ExtendedAttributes use FieldID and explicit
+  Value (CFType 5 or native NumberN/CostN declarations). Do not infer from aliases,
+  hardcoded IDs, numeric-looking text, lookup-only values or native schedule costs.
+- Ordinary activities require finite, nonnegative values; missing/blank, malformed,
+  negative, nonfinite, duplicate/ambiguous or unsupported-range values block Amount
+  Generate with activity/field context. Individual zero is valid. The ordinary
+  total must be positive, finite and usable by the existing float/Excel model.
+- Milestone missing/blank Amount is allowed, remains blank and warns visibly.
+  Explicit zero remains numeric zero; valid nonnegative values are retained.
+  Present invalid values (including duplicates and unsupported range) block Amount
+  Generate with activity/field context. Never discard or reinterpret them as zero.
+- Milestone Progress Weight is always zero. Ordinary Amount is the progress basis;
+  divide by the ordinary-activity basis total, excluding milestones and summaries.
+  The basis total is not the total allocated Contract Value including milestones.
+- Keep raw decimal provenance; use Decimal validation/preview before float/Excel
+  conversion, without rounding weights to cents. Display money to two decimals.
+  No currency conversion or currency inference is performed.
+- The selected field initializes separate Activity Amount input and creation
+  weight bases. Workbook monetary edits do not reapply/switch weights; that is F3.
+  Preserve blank versus explicit zero, Main-derived identity and hierarchy.
+- Record method, field identity/name/type/source and source hash in metadata.
+  New file/field selection invalidates preview; Generate revalidates actual bytes.
+  No persistence, fallback, second XML pipeline or new monetary consumer is added.
+
+Acceptance examples: ordinary 100/300/0 plus milestone 500 gives weights
+25%/75%/0%/0%, ordinary basis 400 and separately retained milestone value 500.
+Missing milestone warns and remains blank; invalid milestone blocks Generate.
+F1 Actual/Monthly/Dashboard, chart repair and overlays remain invariant.

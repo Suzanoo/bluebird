@@ -1,5 +1,6 @@
 """F0 same-origin HTTP adapter. No persistence or change to workbook semantics."""
 from pathlib import Path
+from hashlib import sha256
 from threading import Lock
 from time import monotonic
 from xml.parsers.expat import ExpatError
@@ -12,7 +13,7 @@ from starlette.requests import ClientDisconnect
 from openpyxl.worksheet._writer import ALL_TEMP_FILES
 
 from run import convert
-from engine.service import convert as convert_f1
+from engine.service import convert as convert_f1, inspect_amount
 from engine.domain import Settings, InputError
 
 MAX_BYTES = 4_000_000
@@ -28,14 +29,25 @@ def error(status, code, message):
                         headers={'Cache-Control': 'no-store'})
 
 
-def generate(raw, method, settings=None):
+def generate(raw, method, settings=None, inspect_only=False, amount_field=None, expected_hash=None):
     if not _conversion_lock.acquire(blocking=False):
         return error(503, 'busy', 'Converter is busy. Please try again shortly.')
     before = set(ALL_TEMP_FILES)
     started = monotonic()
     try:
         try:
-            data, info = (convert_f1(raw, method, settings.cutoff, settings.distribution)
+            if expected_hash and sha256(raw).hexdigest() != expected_hash:
+                return error(422, 'stale_preview', 'The XML changed. Inspect and validate Amount again.')
+            if inspect_only:
+                payload = inspect_amount(raw, amount_field)
+                if monotonic() - started > TARGET_SECONDS:
+                    return error(504, 'timeout', 'Amount inspection exceeded the runtime target.')
+                response = JSONResponse(payload, headers={'Cache-Control': 'no-store',
+                                                          'X-Content-Type-Options': 'nosniff'})
+                if len(response.body) > MAX_BYTES:
+                    return error(413, 'preview_too_large', 'Amount preview exceeds the current 4 MB limit.')
+                return response
+            data, info = (convert_f1(raw, method, settings.cutoff, settings.distribution, settings.amount_field)
                           if settings else convert(raw, method))
             if monotonic() - started > TARGET_SECONDS:
                 return error(504, 'timeout', 'Conversion exceeded the 60-second runtime target.')
@@ -75,9 +87,10 @@ def generate(raw, method, settings=None):
             _conversion_lock.release()
 
 
-async def handle_upload(request: Request, settings=None):
+async def handle_upload(request: Request, settings=None, inspect_only=False):
     methods = request.query_params.getlist('method')
-    if len(methods) != 1 or methods[0] not in ('Equal', 'Duration'):
+    allowed = ('Equal', 'Duration', 'Amount') if settings else ('Equal', 'Duration')
+    if not inspect_only and (len(methods) != 1 or methods[0] not in allowed):
         return error(422, 'invalid_method', 'Select Equal or Duration explicitly.')
     if request.headers.get('content-type', '').split(';', 1)[0].strip().lower() not in ('application/xml', 'text/xml'):
         return error(415, 'invalid_content_type', 'Upload XML using application/xml.')
@@ -109,7 +122,8 @@ async def handle_upload(request: Request, settings=None):
     # A thread keeps HTTP handling responsive; it is not a background job.
     # Disconnect/timeout does not forcibly cancel CPU work. The platform duration
     # and client deadline are separate; generate rejects results finished late.
-    return await run_in_threadpool(generate, bytes(raw), methods[0], settings)
+    return await run_in_threadpool(generate, bytes(raw), methods[0] if methods else None, settings,
+        inspect_only, request.query_params.get('amount_field'), request.query_params.get('source_hash'))
 
 
 @app.post('/api/f0/convert')
@@ -119,13 +133,22 @@ async def convert_xml(request: Request):
 
 @app.post('/api/progress/convert')
 async def create_workbook(request: Request):
-    for key in ('method', 'cutoff', 'distribution'):
+    for key in ('method', 'cutoff', 'distribution', 'amount_field', 'source_hash'):
         if len(request.query_params.getlist(key)) > 1:
             return error(422, 'invalid_config', 'Each setting must be supplied once.')
     try:
         settings = Settings(request.query_params.get('method', ''),
                             request.query_params.get('cutoff', 'Friday'),
-                            request.query_params.get('distribution', 'auto'))
+                            request.query_params.get('distribution', 'auto'),
+                            request.query_params.get('amount_field'))
     except InputError as exc:
         return error(422, 'invalid_config', str(exc))
     return await handle_upload(request, settings)
+
+
+@app.post('/api/progress/amount-preview')
+async def preview_xml_amount(request: Request):
+    for key in ('amount_field', 'source_hash'):
+        if len(request.query_params.getlist(key)) > 1:
+            return error(422, 'invalid_config', 'Each setting must be supplied once.')
+    return await handle_upload(request, inspect_only=True)

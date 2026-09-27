@@ -3,7 +3,7 @@
 - Status: Approved
 - Last Updated: 2026-09-21
 - Authority: Product vision, scope, and high-level product direction
-- Stage: M0 merged; F0 accepted; F1 authorized; F2–F6 sequence approved, not started
+- Stage: M0/F0/F1 accepted; F2 implementation authorized 2026-09-26; F3–F6 not started
 
 ## Approved file-oriented V1 direction (2026-09-14)
 
@@ -177,4 +177,8 @@ sequence and canonical Progress semantics. No implementation authorization grant
 PO accepted the [F1 specification](docs/milestones/F1-core-progress-workbook.md) and authorized F1 only.
 The Progress contract owns final defaults, strict Duration and Live Rebuild
 Dashboard Actual display. Earlier pending-authorization statements are historical.
-F2–F6, Git operations and deployment remain unauthorized.
+That authorization statement is historical. PO authorized F2 on 2026-09-26 and
+approved milestone Contract Value Policy A. See the
+[F2 specification](docs/milestones/F2-xml-amount-weighting.md) and canonical
+[Progress contract](docs/features/progress-contract.md). F3–F6, Git operations
+and deployment remain unauthorized.

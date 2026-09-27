@@ -116,7 +116,8 @@ def write_main(wb, schedule, settings, weights, periods, plans):
     project_name = dict(schedule.source_project_fields).get('Name', schedule.source_project)
     setup_sheet(ws, 'WEEKLY PROGRESS', periods)
     text(ws['C2'], project_name)
-    ws['I2'] = f'{settings.method} basis (not money)'
+    ws['I2'] = ('Amount basis (ordinary only)' if settings.method == 'Amount'
+                else f'{settings.method} basis (not money)')
     last = FIRST + len(periods)-1
     records, activity_rows = [], []
     children, tasks = {}, {}
@@ -232,10 +233,11 @@ def write_monthly(wb, main, records, periods, scurve):
     return ws, list(months.values())
 
 
-def write_amount(wb, records, main):
+def write_amount(wb, records, main, selection=None):
+    amounts = {row.key: row.value for row in selection.rows} if selection else {}
     ws = wb.create_sheet('Activity Amount')
     ws.append(['ACTIVITY AMOUNT — allocated Contract Value'])
-    ws.append(['Input only. Blank is effective zero; entering money never changes Equal/Duration.'])
+    ws.append(['Input only. Blank is effective zero; edits never change creation weights. Apply/Refresh is not available.'])
     ws.append(['WBS', 'Activity ID', 'Activity Name', 'Amount', 'Internal ID', 'Effective Amount', 'Input state'])
     dv = DataValidation(type='decimal', operator='greaterThanOrEqual', formula1=0, allow_blank=True)
     dv.showErrorMessage = True; dv.error = 'Enter nonnegative allocated Contract Value or leave blank.'
@@ -248,6 +250,8 @@ def write_amount(wb, records, main):
         ws.row_dimensions[ar].outlineLevel = min(level, 7)
         ws.row_dimensions[ar].height = 25
         if kind == 'Activity':
+            if amounts.get(key) is not None:
+                ws.cell(ar, 4, float(amounts[key]))
             ws.cell(ar, 4).protection = Protection(locked=False)
             ws.cell(ar, 4).fill = PatternFill('solid', fgColor=TS.activity_actual_fill)
             ws.cell(ar, 4).number_format = '#,##0.00'
@@ -419,13 +423,17 @@ def write_dashboard(wb, main, monthly, periods, months, scurve):
         ws.add_chart(overlay)
 
 
-def render(schedule, settings, prepared):
+def render(schedule, settings, prepared, amount_selection=None):
     weights, periods, plans, methods, warnings = prepared
     wb = Workbook()
     main, records, activities, scurve = write_main(wb, schedule, settings, weights, periods, plans)
     monthly, months = write_monthly(wb, main, records, periods, scurve)
-    write_amount(wb, records, main)
+    if settings.method == 'Amount' and amount_selection is None:
+        raise ValueError('Amount rendering requires validated selection')
+    write_amount(wb, records, main, amount_selection)
     write_dashboard(wb, main, monthly, periods, months, scurve)
+    if amount_selection:
+        wb['Dashboard']['B33'] = 'Amount creation weights exclude milestones. Activity Amount edits do not reapply weights.'
     guide = wb.create_sheet('Guide')
     guide.append(['BLUEBIRD — PROGRESS WORKBOOK'])
     for message in [
@@ -437,22 +445,35 @@ def render(schedule, settings, prepared):
         'Dashboard carries the latest Actual for display up to its cutoff, without filling blank source records.',
         'Activity Amount is allocated Contract Value, not cost/BAC. It is stored separately and does not change weights.',
         'Milestones have zero Progress Weight; their entered Contract Value is retained.',
-        'Amount weighting and workbook refresh are later capabilities. Do not restructure rows or edit calculated Plan.',
+        'Workbook refresh / Apply Amount is a later capability. Do not restructure rows or edit calculated Plan.',
         f'Creation: {settings.method}; cutoff {settings.cutoff}; distribution {settings.distribution}.',
-    ] + warnings:
+    ] + ([f'XML Amount source: {amount_selection.field.name} [{amount_selection.field.identity}]; {amount_selection.field.data_type}.',
+          f'Ordinary Amount weighting basis total: {amount_selection.total} (excludes milestone Contract Value).',
+          'Selected numeric field is allocated Contract Value on the user-selected monetary basis. No currency conversion.',
+          'Milestone money is retained separately; missing milestone Amount stays blank and warns. Excel numeric precision applies.']
+         if amount_selection else []) + warnings:
         guide.append([message])
+        guide.cell(guide.max_row, 1).data_type = 's'
     guide.column_dimensions['A'].width = 110
     for row in guide:
         row[0].alignment = Alignment(wrap_text=True, vertical='center')
         row[0].font = Font(name=THEME['font'], size=11)
         guide.row_dimensions[row[0].row].height = 36
     meta = wb.create_sheet('_Metadata')
-    for k, v in [('schema', 'bluebird-f1-1'), ('weight_method', settings.method),
+    for k, v in [('schema', 'bluebird-f2-1'), ('weight_method', settings.method),
                  ('weekly_cutoff', settings.cutoff), ('plan_distribution', settings.distribution),
                  ('ps_reference', '89a6b80'), ('import_id', schedule.import_id),
                  ('source_hash', schedule.source_hash), ('source_system', schedule.source_system),
                  ('source_project', schedule.source_project), ('amount_basis', 'allocated Contract Value')]:
         meta.append([k, v])
+    if amount_selection:
+        for key, value in asdict(amount_selection.field).items():
+            meta.append(['amount_field_' + key, value])
+        meta.append(['ordinary_amount_basis_total', str(amount_selection.total)])
+        meta.append(['amount_policy', 'MS-2 ordinary / Bluebird milestone Policy A'])
+        for row in amount_selection.rows:
+            meta.append(['creation_amount', json.dumps({**asdict(row),
+                'value': str(row.value) if row.value is not None else None}, ensure_ascii=False)])
     for i, a in enumerate(schedule.activities):
         meta.append(['activity', json.dumps({**asdict(a), 'distribution': methods[i]}, default=str, ensure_ascii=False)])
     for w in schedule.wbs: meta.append(['wbs', json.dumps(asdict(w), ensure_ascii=False)])

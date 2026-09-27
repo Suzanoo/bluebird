@@ -61,4 +61,7 @@ sequence authorizes Git operations or deployment.
 PO accepted the [F1 specification](F1-core-progress-workbook.md) and authorized F1 only.
 The Progress contract owns final defaults, strict Duration and Live Rebuild
 Dashboard Actual display. Earlier pending-authorization statements are historical.
-F2–F6, Git operations and deployment remain unauthorized.
+At that historical update F2–F6 were unauthorized. PO authorized
+[F2 XML Amount weighting](F2-xml-amount-weighting.md) on 2026-09-26, including
+milestone Contract Value Policy A. F3–F6, Git operations and deployment remain
+unauthorized. The sequence is unchanged.
