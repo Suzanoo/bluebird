@@ -1,7 +1,8 @@
 # F1 — Core Progress Workbook and Landing A
 
 - Status: F1 implementation and Windows Desktop Excel lifecycle accepted by PO 2026-09-25; closure recorded
-- Implementation: F1 + cumulative R2 integrated at f37fbde; PO acceptance confirmed
+- Historical accepted implementation: F1 + cumulative R2 integrated at f37fbde; PO acceptance confirmed
+- Current product revision/task: [documentation index](../README.md#current-accepted-state-and-current-task)
 
 ## Required reading
 
@@ -34,13 +35,16 @@ Theme Editor; Gantt; accounts/persistence; or new infrastructure.
 - Separately authorized deployed browser Upload -> Generate -> Download.
 - Engineering tests do not equal Desktop Excel/deployed/PO acceptance.
 
-## Implementation boundary
+## Original F1 implementation boundary
 
 Reuse source/canonical/runtime patterns; domain has no Excel/web dependencies.
 Cell addresses belong to renderers. Keep one Python service, bounded processing,
 no raw upload logging/storage. Preserve F0 endpoint and tests. No Git or deployment.
 
-## Engineering evidence and open gates
+## Historical engineering evidence and then-open gates
+
+> The following evidence describes earlier handoffs, not current gate status.
+> The dated PO closure below supersedes the historical Desktop Excel failures.
 
 41 Python tests pass (22 existing F0 + 19 F1); Next lint/build pass. Tests inspect
 serialized formulas, package integrity and planning oracles, not Desktop Excel
@@ -79,7 +83,7 @@ operation, deployment or new product decision was performed.
 Repository: Suzanoo/bluebird
 Branch: feat/f1-core-progress-workbook
 Accepted implementation: f37fbde
-Baseline: main d965b7b
+Historical input baseline: main d965b7b
 
 ### Automated verification
 

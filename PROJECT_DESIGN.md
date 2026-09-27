@@ -1,9 +1,9 @@
 # Bluebird — Project Design
 
 - Status: Approved
-- Last Updated: 2026-09-21
+- Last Updated: 2026-09-27
 - Authority: Product vision, scope, and high-level product direction
-- Stage: M0/F0/F1 accepted; F2 implementation authorized 2026-09-26; F3–F6 not started
+- Current implementation/authorization: see [current state](docs/README.md#current-accepted-state-and-current-task).
 
 ## Approved file-oriented V1 direction (2026-09-14)
 
@@ -16,9 +16,8 @@ for approved weighting and Activity Amount semantics.
 The earlier broad scope and M1–M9 sequence below are retained as future planning,
 not initial V1 prerequisites. DEC-001 BOQ timing is deferred; Activity Amount input
 comes first. DEC-003 applies when persisted Project creation is introduced.
-F0 is accepted; its proof assumptions are not universal product rules. F1 now has
-an approved delivery specification and explicit implementation authorization
-(2026-09-23). The [approved F1–F6 sequence](docs/milestones/file-workbook-roadmap.md)
+F0 proof assumptions are not universal product rules. F1 specification and
+2026-09-23 authorization are recorded in its milestone history. The [approved F1–F6 sequence](docs/milestones/file-workbook-roadmap.md)
 owns delivery order and milestone intent; the older sequence below is superseded.
 
 ## Accepted product alignment (2026-09-21)
@@ -172,7 +171,7 @@ section with a link to the distinct M0 specification.
 Financial Forecast exclusion and Create configuration; linked the approved delivery
 sequence and canonical Progress semantics. No implementation authorization granted.
 
-## F1 authorization update — 2026-09-23
+## Historical F1/F2 authorization record — 2026-09-23 and 2026-09-26
 
 PO accepted the [F1 specification](docs/milestones/F1-core-progress-workbook.md) and authorized F1 only.
 The Progress contract owns final defaults, strict Duration and Live Rebuild
@@ -180,5 +179,5 @@ Dashboard Actual display. Earlier pending-authorization statements are historica
 That authorization statement is historical. PO authorized F2 on 2026-09-26 and
 approved milestone Contract Value Policy A. See the
 [F2 specification](docs/milestones/F2-xml-amount-weighting.md) and canonical
-[Progress contract](docs/features/progress-contract.md). F3–F6, Git operations
-and deployment remain unauthorized.
+[Progress contract](docs/features/progress-contract.md). At that authorization, F3–F6, Git operations and deployment were excluded.
+For current authorization and accepted revision, use the [current-state entry](docs/README.md#current-accepted-state-and-current-task).

@@ -1,7 +1,7 @@
 # Bluebird Coordinator Collaboration Contract
 
-Status: Approved collaboration model; Bluebird adaptation delivered for review
-Last Updated: 2026-09-20
+Status: Approved collaboration model; refinement authorized by PO 2026-09-27
+Last Updated: 2026-09-27
 Authority: Bluebird collaboration procedure and boundaries only
 Owner: Product Owner
 Applies to: Coordinator acting between the Product Owner and Engineer
@@ -102,6 +102,65 @@ Maintain the distinction:
 Do not repeatedly embed the entire Contract and Workflow in every Engineer prompt when authoritative repository documents are available.
 
 Prefer short prompts that instruct Engineer to read the authoritative documents and then describe only the current task, relevant accepted decisions, and required mode.
+
+A normal dispatch contains only: task ID/mode; exact input revision; authorized
+scope and authority links; new PO decisions; required deliverables/gates; stop
+condition; and latest checkpoint when resuming. Reference standing rules and
+accepted history rather than copying them. Do not shorten away material scope
+changes, exclusions or unresolved decisions.
+
+### Current-state and closure responsibility
+
+Maintain [docs/README.md current state](README.md#current-accepted-state-and-current-task)
+as the single compact live entry. It points to milestone evidence and canonical
+rules, rather than restating them. Keep one clearly assigned engineering task
+and name the next actor/action when waiting.
+
+Record the last accepted product revision separately from task input baseline
+and verified repository HEAD. A later documentation-only commit need not change
+the accepted product revision; never create self-referential SHA update loops.
+
+At dispatch, verify scope/authorization and the relevant repository delta.
+At handoff, verify artifact availability, brief PO and record the next gate.
+After PO decisions, update the owning rule/evidence and current-state pointers
+through separately authorized integration. After Git, report verified results
+and close only what has actually completed. Preserve dated evidence; label
+superseded open/failed results historical instead of rewriting them as PASS.
+
+If a PO decision or checkpoint is not yet integrated, retain its accessible
+dated handoff/decision reference and identify pending synchronization. Do not
+claim the repository contains unrecorded conversation decisions. Batch state
+updates with authorized integration where practical; this duty grants no
+standing commit/push/merge/deploy permission.
+
+Use four task states:
+
+- proposed: not authorized to execute;
+- active (authorized): executing the stated scope;
+- awaiting review/action: name reviewer/blocker, next actor and action;
+- closed: requested task and applicable closure actions completed, with evidence.
+
+Task state is separate from gate evidence. Use PASS / FAIL / OPEN / N/A only
+with supporting evidence/reason. Engineering completion, automated PASS,
+checkpoint creation and PO acceptance are separate concepts.
+
+Investigation closes after report review/decision without automatically authorizing
+implementation. Implementation/fixes require applicable validation, PO acceptance
+and separately authorized integration. Documentation uses consistency/link review;
+Excel/runtime are N/A when unchanged. A fix needs no new milestone merely to
+track it, but corrective scope still requires authorization.
+
+Confirm receipt of recoverable checkpoints under
+[Engineer Workflow](ENGINEER_WORKFLOW.md#recoverable-checkpoints); retain the
+latest accessible package, not just a chat summary. Coordinate Work execution
+and PO/Coordinator review asynchronously when helpful, without mandatory time
+boxes or an assumption of automatic continuation. Do not spend capacity polling
+for an unavailable reviewer.
+
+For the [two-task trial](ENGINEER_WORKFLOW.md#two-task-procedure-trial), keep links
+to the two normal task handoffs in the current-state entry. After both complete,
+brief PO on whether a standalone procedure would eliminate demonstrated repetition.
+Do not create skills or a separate tracking system before that decision.
 
 ## 8. Quota / investigation efficiency
 

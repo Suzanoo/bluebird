@@ -1,9 +1,10 @@
 # Architecture foundation
 
 - Status: Approved
-- Last Updated: 2026-09-12
+- Last Updated: 2026-09-27
 - Authority: Foundational technical constraints
-- Implementation: Documentation only; no domain schema or infrastructure implemented
+- Original scope (2026-09-12): foundation documentation; this header is not a claim that later implementation is absent.
+- Current implementation/authorization: [documentation index](../README.md#current-accepted-state-and-current-task)
 
 Product scope belongs to [Project Design](../../PROJECT_DESIGN.md).
 Workspace ownership is defined once in
@@ -14,8 +15,10 @@ Workspace ownership is defined once in
 An ephemeral conversion/import context is not a persisted cloud Project.
 Workspace ownership and authentication apply when persisted Projects arrive;
 no account, database or Workspace is required for initial XML conversion.
-Domain/adapter and identity boundaries below still apply. F0 proof code lives
-under `spikes/f0`; it is not a production engine or approved deployment ADR.
+Domain/adapter and identity boundaries below still apply. The original F0 proof lives under `spikes/f0`; the directory name does not
+independently establish current engine readiness or deployment approval. Use
+linked milestone evidence for later implementation/acceptance; this foundation
+is not a deployment ADR.
 
 ## Project identity
 
@@ -76,9 +79,11 @@ Introduce authorization/security, data integrity, migration discipline, and
 recovery when the relevant persisted or multi-user capability appears.
 An M9 readiness review does not defer those obligations.
 
-Before F1 delivery, resolve canonical schedule field/date/percentage semantics against
+The original pre-F1 decision gate required resolving canonical schedule field/date/percentage semantics against
 representative P6/MSP inputs, source identity handling, file handling, and bounded
-import processing. Do not infer native MPP support from XML support.
+import processing. Later decisions/evidence belong to the Progress contract and
+[F1 milestone](../milestones/F1-core-progress-workbook.md); this historical gate
+does not reopen acceptance. Do not infer native MPP support from XML support.
 
 Detailed revision/reconciliation, file retention, background processing, and
 round-trip behavior require later scoped design. Do not implement them merely

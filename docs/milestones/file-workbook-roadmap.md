@@ -1,9 +1,9 @@
 # File-oriented workbook delivery sequence
 
 - Status: Approved sequence and milestone intent; detailed specifications pending
-- Last Updated: 2026-09-21
+- Last Updated: 2026-09-27
 - Authority: Delivery order and milestone boundaries; not business-rule ownership
-- Implementation: F0 accepted; F1 authorized 2026-09-23; F2–F6 not started/unauthorized
+- Current delivery/authorization: see [current state](../README.md#current-accepted-state-and-current-task).
 - Decision source: PO Acceptance of Revised Milestone Proposal, 2026-09-21
 
 ## Required reading
@@ -56,12 +56,13 @@ workflow and PO acceptance separate. Prior F0 acceptance stays closed; changed
 rendering/calculation behavior needs its own relevant acceptance. Nothing in this
 sequence authorizes Git operations or deployment.
 
-## F1 authorization update — 2026-09-23
+## Historical F1/F2 authorization record — 2026-09-23 and 2026-09-26
 
 PO accepted the [F1 specification](F1-core-progress-workbook.md) and authorized F1 only.
 The Progress contract owns final defaults, strict Duration and Live Rebuild
 Dashboard Actual display. Earlier pending-authorization statements are historical.
 At that historical update F2–F6 were unauthorized. PO authorized
 [F2 XML Amount weighting](F2-xml-amount-weighting.md) on 2026-09-26, including
-milestone Contract Value Policy A. F3–F6, Git operations and deployment remain
-unauthorized. The sequence is unchanged.
+milestone Contract Value Policy A. F3–F6, Git operations and deployment were excluded from that authorization.
+Current task authorization is maintained only in the linked current-state entry.
+These historical authorizations did not change the approved sequence.

@@ -1,7 +1,7 @@
 # Bluebird Engineer Workflow
 
-Status: Approved collaboration model; Bluebird adaptation delivered for review
-Last Updated: 2026-09-20
+Status: Approved collaboration model; refinement authorized by PO 2026-09-27
+Last Updated: 2026-09-27
 Authority: Bluebird collaboration procedure and boundaries only
 Owner: Product Owner
 Purpose: Reusable operating method for Engineer under [Engineer Contract](ENGINEER_CONTRACT.md)
@@ -53,6 +53,27 @@ When accepted engineering notes exist:
 Do not repeatedly rediscover stable architecture merely to reproduce previously accepted findings.
 
 If the baseline cannot be verified or architecture materially changed, state that and widen investigation only as needed.
+
+### Startup and recovery
+
+Use the [current-state entry](README.md#current-accepted-state-and-current-task) to
+identify accepted product revision, assigned task, authorization and next actor.
+Distinguish that revision from the task input baseline and actual repository HEAD.
+Verify the relevant delta; do not assume a newer revision grants broader scope.
+
+A fresh session reads the standing contracts once, then task-specific authority
+and accepted notes. A continuing session reuses already-read unchanged context
+and reads only relevant changes. Missing or contradictory evidence is a reason
+for targeted verification, not a routine whole-repository reread.
+
+For interrupted work, recover the latest accessible handoff and complete changed
+files first. Check their baseline, manifest, test evidence and next step against
+the assignment. Never reconstruct lost code from prose or memory. If artifacts
+are unavailable, report the last recoverable point and what is missing.
+
+Load existing procedures only when relevant: workbook changes use sections 11–12
+and the milestone's developer acceptance guide; handoff/recovery uses section 13.
+Business rules remain in feature/milestone contracts; procedures only point to them.
 
 ## 4. Reuse-first investigation
 
@@ -208,6 +229,40 @@ with a numbered Product Owner acceptance list, together with:
 - remaining acceptance gates.
 
 Do not require the next run to reconstruct state from conversation history.
+
+### Recoverable checkpoints
+
+When interruption or limited capacity may prevent completion, use engineering
+judgment to create a recoverable checkpoint. There is no mandatory minute/hour
+interval or five-hour contract. Allow for verification and packaging; do not
+assume a quota window guarantees continuous execution.
+
+Mark an incomplete delivery **INCOMPLETE / NOT FOR ACCEPTANCE OR MERGE**.
+In the existing task handoff, record as applicable:
+
+- exact repository/task baseline, task ID and authorized scope;
+- completed work, remaining work and next executable step;
+- complete current changed files, manifest and exact repository-relative paths;
+- actual test commands/results, failing checks and unrun checks;
+- material blockers/required decisions and the next responsible actor;
+- an accessible artifact location, with version/date sufficient to identify the latest package.
+
+A prose-only update is insufficient when changed implementation files exist.
+Exclude private inputs, secrets and environments under section 12. Keep checkpoints
+outside accepted repository state until reviewed/integrated through the normal
+process. A checkpoint neither establishes engineering completion nor grants PO
+acceptance. After an unexpected interruption, disclose unrecovered work honestly.
+
+### Two-task procedure trial
+
+Use the refined workflow on the next two real authorized engineering tasks after
+adoption; this documentation installation does not count as the trial. In each
+normal handoff, note only meaningful repeated reading, missing-context blocks,
+duplicated prompt content, checkpoint recovery success/failure and procedures
+needed in both tasks. Do not invent a recovery trial when no interruption occurred.
+Coordinator links the two task handoffs in the current-state entry and brings the
+evidence to PO. No standalone skills/procedures or telemetry infrastructure are
+authorized; reuse this workflow and existing developer guides until a later decision.
 
 ## 14. Git execution after acceptance
 
