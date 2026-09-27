@@ -9,6 +9,14 @@ from xml.etree import ElementTree as ET
 from xml.parsers import expat
 
 @dataclass(frozen=True)
+class AmountField:
+    identity: str
+    name: str
+    source: str
+    data_type: str
+    native_name: str = ''
+
+@dataclass(frozen=True)
 class Wbs:
     key: str
     source_id: str
@@ -37,6 +45,7 @@ class Activity:
     source_type: str = ''
     start_raw: str = ''
     finish_raw: str = ''
+    amount_field_values: tuple[tuple[str, str | None], ...] = ()
 
 @dataclass(frozen=True)
 class Schedule:
@@ -47,6 +56,7 @@ class Schedule:
     wbs: tuple[Wbs, ...]
     activities: tuple[Activity, ...]
     source_project_fields: tuple[tuple[str, str], ...] = ()
+    amount_fields: tuple[AmountField, ...] = ()
 
 def value(e, name):
     n = e.find(name)
@@ -83,6 +93,35 @@ def normalize(root, raw, import_id=None, msp_activity_id_field=None, *, producti
     projects = [root] if msp else root.findall('Project')
     if len(projects) != 1: raise ValueError('Exactly one supported project required')
     p = projects[0]
+    # MS-2 declarations own field identity/type; never infer from alias or value.
+    # Reuse this traversal for monetary provenance without changing activity IDs.
+    numeric_types = {'double': 'DoubleValue', 'integer': 'IntegerValue', 'cost': 'CostValue'}
+    if msp:
+        fields = tuple(AmountField('msp:field:' + value(e, 'FieldID'),
+            value(e, 'Alias') or value(e, 'FieldName') or value(e, 'FieldID'), 'MSP',
+            'Number' if value(e, 'CFType') == '5' else 'Numeric', value(e, 'FieldName'))
+            for e in p.findall('ExtendedAttributes/ExtendedAttribute')
+            if value(e, 'FieldID') and (value(e, 'CFType') == '5'
+                or re.fullmatch(r'(?:Number|Cost)\d+', value(e, 'FieldName'))))
+    else:
+        fields = tuple(AmountField('p6:udf:' + value(e, 'ObjectId'),
+            value(e, 'Title') or value(e, 'ObjectId'), 'P6', value(e, 'DataType'))
+            for e in root.iter('UDFType') if value(e, 'ObjectId')
+            and value(e, 'SubjectArea').lower() == 'activity'
+            and value(e, 'DataType').lower() in numeric_types)
+    eligible = {f.identity: f for f in fields}
+    def amount_values(a):
+        found = []
+        for e in a.findall('ExtendedAttribute' if msp else 'UDF'):
+            identity = ('msp:field:' + value(e, 'FieldID') if msp
+                        else 'p6:udf:' + value(e, 'TypeObjectId'))
+            if identity not in eligible: continue
+            tag = 'Value' if msp else numeric_types[eligible[identity].data_type.lower()]
+            nodes = e.findall(tag)
+            # Preserve duplicates (including duplicate Value children) for validation.
+            found.extend((identity, n.text or '') for n in nodes)
+            if not nodes: found.append((identity, None))
+        return tuple(found)
     wbs, rows = [], []
     if msp:
         # Only a declared business alias or explicitly evidenced mapping selects
@@ -165,7 +204,10 @@ def normalize(root, raw, import_id=None, msp_activity_id_field=None, *, producti
         if not production and msp and (duration_format not in ('3','5','7','9','11') or value(a, 'Manual') == '1'):
             hours = None
         activities.append(Activity(key('activity', identity), obj or None, sid, value(a, 'Name'), wk, start, finish, hours, field, dur, value(a, 'CalendarUID' if msp else 'CalendarObjectId'), milestone, value(a, 'ID') if msp else '', ('ExtendedAttribute:' + msp_activity_id_field if msp_activity_id_field else 'ID') if msp else 'Id', duration_format, value(a, 'Status') if not msp else '', value(a, 'Type'), value(a, 'Start' if msp else 'PlannedStartDate'), value(a, 'Finish' if msp else 'PlannedFinishDate')))
-    return Schedule(iid, sha256(raw).hexdigest(), 'MSP' if msp else 'P6', value(p, 'UID' if msp else 'ObjectId') or value(p, 'Id') or value(p, 'Name'), tuple(wbs), tuple(activities), tuple((k, value(p,k)) for k in ('UID','Id','ObjectId','GUID','Name') if value(p,k)))
+    from dataclasses import replace
+    activities = [replace(a, amount_field_values=amount_values(source[0]))
+                  for a, source in zip(activities, rows)]
+    return Schedule(iid, sha256(raw).hexdigest(), 'MSP' if msp else 'P6', value(p, 'UID' if msp else 'ObjectId') or value(p, 'Id') or value(p, 'Name'), tuple(wbs), tuple(activities), tuple((k, value(p,k)) for k in ('UID','Id','ObjectId','GUID','Name') if value(p,k)), fields)
 
 def bases(schedule, method):
     if method not in ('Equal', 'Duration'): raise ValueError('Explicit Equal or Duration required')

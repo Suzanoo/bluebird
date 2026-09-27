@@ -9,6 +9,12 @@ Reference repository: https://github.com/Suzanoo/progress-studio/tree/89a6b80c06
 - domain.distribute: coordinate-free adaptation of distribution_workbook.distribute.
 - workbook.py: adapts progress_workbook, monthly_main_workbook (accepted MS-2 total
   fix), and Live Dashboard DF-1 display formulas to Bluebird's workbook layout.
+- amount.py and model.py monetary-field extraction: adapted from PS MS-2
+  services/xml_amount_service.py, domain/amount_field.py and schedule_xml
+  P6/MSP adapters at the same reference. Bluebird deliberately retains milestone
+  money separately and validates it under PO-approved Policy A (2026-09-26),
+  unlike PS's combined amount/weight assignment. Uses immutable internal activity
+  keys, not display IDs, for workbook monetary mapping.
 
 No runtime dependency on the Progress Studio repository. Source identities and
 XML normalization reuse the Bluebird F0 adapter with explicit F1 policy options.

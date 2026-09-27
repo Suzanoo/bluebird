@@ -23,18 +23,26 @@ class Settings:
     method: str
     cutoff: str = 'Friday'
     distribution: str = 'auto'
+    amount_field: str | None = None
 
     def __post_init__(self):
-        if self.method not in ('Equal', 'Duration'):
-            raise InputError('Select Equal or Duration explicitly.')
+        if self.method not in ('Equal', 'Duration', 'Amount'):
+            raise InputError('Select Equal, Duration or validated Amount explicitly.')
+        if self.method == 'Amount' and not self.amount_field:
+            raise InputError('Select an XML Amount field explicitly.')
+        if self.method != 'Amount' and self.amount_field:
+            raise InputError('Amount field selection applies only to Amount weighting.')
         if self.cutoff not in WEEKDAYS:
             raise InputError('Select a valid weekly cutoff day.')
         if self.distribution not in DISTRIBUTIONS:
             raise InputError('Select auto, flat, front, back or bell distribution.')
 
 
-def weight_bases(schedule, method):
-    Settings(method)
+def weight_bases(schedule, method, amount_field=None, amount_selection=None):
+    Settings(method, amount_field=amount_field)
+    if method == 'Amount':
+        from .amount import preview_amounts
+        return (amount_selection or preview_amounts(schedule, amount_field)).require_valid().bases
     values, invalid = [], []
     for a in schedule.activities:
         if a.milestone:
@@ -89,12 +97,12 @@ def distribute(activity, periods, method):
     return result
 
 
-def prepare(schedule, settings):
-    weights = weight_bases(schedule, settings.method)
+def prepare(schedule, settings, amount_selection=None):
+    weights = weight_bases(schedule, settings.method, settings.amount_field, amount_selection)
     periods = reporting_weeks(schedule, settings.cutoff)
     wbs = {w.key: w for w in schedule.wbs}
     rules = load_rules()
-    plans, methods, warnings = [], [], []
+    plans, methods, warnings = [], [], list(amount_selection.warnings) if amount_selection else []
     for a in schedule.activities:
         method = settings.distribution
         if method == 'auto':

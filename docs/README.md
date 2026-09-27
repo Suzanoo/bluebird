@@ -15,6 +15,7 @@ product, architecture and milestone authority remain in their existing homes.
 
 ## Current entry points
 
+- [F2 XML Amount weighting](milestones/F2-xml-amount-weighting.md) — PO authorized 2026-09-26; Policy A approved, acceptance separate
 - [Product direction](../PROJECT_DESIGN.md)
 - [Architecture foundation](architecture/foundation.md)
 - [Workspace ownership ADR](architecture/decisions/ADR-001-workspace-ownership.md)
@@ -111,4 +112,6 @@ do not override the current canonical documents.
 PO accepted the [F1 specification](milestones/F1-core-progress-workbook.md) and authorized F1 only.
 The Progress contract owns final defaults, strict Duration and Live Rebuild
 Dashboard Actual display. Earlier pending-authorization statements are historical.
-F2–F6, Git operations and deployment remain unauthorized.
+At that historical update F2–F6 were unauthorized. F2 is now authorized by the
+2026-09-26 PO instruction and linked specification; F3–F6, Git operations and
+deployment remain unauthorized.
