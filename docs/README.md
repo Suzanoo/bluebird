@@ -8,19 +8,19 @@
 
 - Accepted product: F2 — XML Amount Weighting, PO accepted / merged / closed; [closure evidence](milestones/F2-xml-amount-weighting.md#po-closure-record--2026-09-27).
 - Accepted product revision: main `7ed9eef77a88d23bc13c92fe94d6251551c57d7f`. This is not a claim about the latest repository HEAD.
-- Current task: `WF-20260927` — Durable Project Knowledge / Workflow Refinement.
-- Mode / input baseline: documentation implementation only / the accepted product revision above.
-- State: awaiting review/action — engineering handoff prepared; PO acceptance of these changes remains open.
-- Owner / next actor: Engineer owns the handoff; Coordinator briefs PO, then PO decides acceptance.
-- Authorization / scope: PO authorization dated 2026-09-27, recorded [below](#workflow-refinement-authorization--2026-09-27).
-- Latest handoff: `BLUEBIRD_WORKFLOW_REFINEMENT_REPORT.txt` and `BLUEBIRD_WORKFLOW_REFINEMENT_CHANGED_FILES.zip`, delivered together in ChatGPT Library, folder `Bluebird`; resolve by exact filename. No incomplete checkpoint is pending.
-- Next action: Coordinator reviews the delivered report/files and requests PO acceptance; Git requires separate explicit authorization.
-- Not authorized by this task: Structure/Readability, F3–F6, Dashboard polish, ENG/THA product changes, Git or deployment. [Sequence and milestone boundaries](milestones/file-workbook-roadmap.md).
-- Procedure trial: next two real authorized engineering tasks after adoption; no task completions counted yet. [Trial procedure](ENGINEER_WORKFLOW.md#two-task-procedure-trial).
+- Current task: `SR-TRIAL1-20260927` — Structure / Readability correction.
+- Mode / input baseline: bounded corrective implementation / `e2bc3555f3d1422b2c1b87c4d4e4f7a91080cb43`.
+- State: awaiting review/action — engineering handoff prepared; Desktop Excel and PO acceptance remain open.
+- Owner / next actor: Engineer owns delivered files; Coordinator reviews, PO performs the Excel checklist.
+- Authorization / scope: PO instruction dated 2026-09-27, [recorded below](#trial-1-authorization--2026-09-27).
+- Latest handoff: `BLUEBIRD_TRIAL1_REPORT.txt`, `BLUEBIRD_TRIAL1_CHANGED_FILES.zip`, `BLUEBIRD_TRIAL1_ACCEPTANCE.zip` in ChatGPT Library / Bluebird; exact filenames identify the delivery.
+- Next action: review handoff and verify Desktop Excel; Git requires separate explicit authorization.
+- Exclusions: F3–F6, Dashboard polish, localization, agent infrastructure, Git and deployment; [roadmap boundaries](milestones/file-workbook-roadmap.md).
+- Procedure trial: Trial #1 engineering complete, pending acceptance; observations in the report. Trial #2 not authorized by this task.
 
 Coordinator maintains this compact state under the [state/closure responsibility](COORDINATOR_CONTRACT.md#current-state-and-closure-responsibility).
 Gate evidence belongs to its milestone/task report; business and architecture rules remain in their canonical homes.
-This handoff is not yet integrated. Artifact filenames identify external deliveries, not repository-relative files.
+This corrective handoff is not yet integrated. Artifact filenames identify external deliveries, not repository-relative files.
 
 ## Collaboration entry points
 
@@ -143,3 +143,19 @@ This dated record captures the authorized scope, not acceptance of the delivered
 - Deliver complete changed files/manifest and TXT report, validate links/state/authority/history, then stop for PO review.
 
 Approved workflow details live in the linked contracts/procedure, not in the earlier investigation's illustrative scheduling examples.
+
+## Trial #1 authorization — 2026-09-27
+
+PO accepted the workflow refinement and authorized only source-preserving WBS /
+Activity sequencing and P/A readability on repository baseline e2bc355. The
+accepted product revision above stays unchanged pending this correction's acceptance.
+Reuse PS 89a6b80 source-order concepts; preserve identity, hierarchy, calculations,
+Actual blank/zero, weighting, milestone Contract Value and chart integrity. No
+worksheet post-sort, P/A removal, F3 apply/refresh or new product feature.
+
+The scoped implementation/reference and metadata fallback are recorded in
+[engine reference](../spikes/f0/engine/REFERENCE.md#structure-and-readability--trial-1).
+Acceptance requires relevant automated regressions plus PO Excel first-open,
+source order/readability, Actual/Monthly/Dashboard, Amount, F9 and Save/Reopen.
+Do not infer Excel or deployed PASS from automated results. Deliver complete
+changed files, manifest, report and synthetic acceptance workbooks, then stop.

@@ -5,6 +5,7 @@ last-nonblank monthly cumulative; DF-1 latest-prior display, cutoff mask;
 MS-2 monthly percent-complete ranges. Reuses PS theme data, not desktop services.
 """
 from collections import OrderedDict
+from model import ordered_children
 from dataclasses import asdict
 from datetime import date
 from io import BytesIO
@@ -109,6 +110,11 @@ def style_row(ws, row, kind, level, pa, last):
     ws.cell(row, 3).alignment = Alignment(indent=min(level, 15), vertical='center', wrap_text=True)
     ws.row_dimensions[row].outlineLevel = min(level, 7)
     ws.row_dimensions[row].height = 26
+    if pa == 'A':
+        # Display-only: retain type/identity/static values and all formula inputs.
+        # D, I/J, K and timescale remain visible; F/L were already hidden columns.
+        for c in (1, 2, 3, 5, 7, 8, 13):
+            ws.cell(row, c).number_format = ';;;'
 
 
 def write_main(wb, schedule, settings, weights, periods, plans):
@@ -148,13 +154,15 @@ def write_main(wb, schedule, settings, weights, periods, plans):
     summaries = [(5, None)]
 
     def walk(parent=None, level=1, path=''):
-        for w in children.get(parent, []):
-            code = w.code if schedule.source_system == 'MSP' else '.'.join(filter(None, (path, w.code)))
-            r = pair('WBS', w.key, code, w.name, level)
-            walk(w.key, level+1, code)
-            summaries.append((r, ws.max_row))
-        for i, a in tasks.get(parent, []):
-            pair('Activity', a.key, path, a.name, level, a, i)
+        for kind, index, node in ordered_children(
+                schedule.source_system, children.get(parent, []), tasks.get(parent, [])):
+            if kind == 'WBS':
+                code = node.code if schedule.source_system == 'MSP' else '.'.join(filter(None, (path, node.code)))
+                r = pair('WBS', node.key, code, node.name, level)
+                walk(node.key, level+1, code)
+                summaries.append((r, ws.max_row))
+            else:
+                pair('Activity', node.key, path, node.name, level, node, index)
     walk()
     end = ws.max_row
     for r, stop in summaries:

@@ -23,6 +23,8 @@ class Wbs:
     code: str
     name: str
     parent: str | None
+    source_order: int | None = None
+    sequence_number: int | None = None
 
 @dataclass(frozen=True)
 class Activity:
@@ -46,6 +48,7 @@ class Activity:
     start_raw: str = ''
     finish_raw: str = ''
     amount_field_values: tuple[tuple[str, str | None], ...] = ()
+    source_order: int | None = None
 
 @dataclass(frozen=True)
 class Schedule:
@@ -85,6 +88,40 @@ def parse_xml(raw):
     for n in root.iter():
         n.tag = n.tag.rsplit('}', 1)[-1]
     return root
+
+def sequence_number(raw):
+    """PS SequenceNumber concept; unavailable/non-finite values fall back to encounter order."""
+    try:
+        return int(float(raw)) if raw else None
+    except (ValueError, OverflowError):
+        return None
+
+
+def ordered_children(source_system, wbs, activities):
+    """Order one sibling group without changing identity or activity-list indices.
+
+    activities contains (canonical index, Activity). P6 collections have no shared
+    interleaving: direct activities precede child WBS as in PS 89a6b80. MSP uses
+    a shared task encounter index. MSP models lacking that metadata keep legacy group
+    order (child WBS then direct activities), never inferred WBS-code sorting.
+    """
+    def encounter(item, fallback):
+        return item.source_order if item.source_order is not None else fallback
+    children = [('WBS', None, w) for w in wbs]
+    tasks = [('Activity', i, a) for i, a in activities]
+    if source_system == 'MSP':
+        combined = children + tasks
+        if all(item.source_order is not None for _, _, item in combined):
+            return sorted(combined, key=lambda entry: entry[2].source_order)
+        return combined
+    children = [entry for _, entry in sorted(enumerate(children), key=lambda pair: (
+        pair[1][2].sequence_number is None,
+        pair[1][2].sequence_number if pair[1][2].sequence_number is not None
+        else encounter(pair[1][2], pair[0]), encounter(pair[1][2], pair[0])))]
+    tasks = [entry for _, entry in sorted(enumerate(tasks),
+             key=lambda pair: encounter(pair[1][2], pair[0]))]
+    return tasks + children
+
 
 def normalize(root, raw, import_id=None, msp_activity_id_field=None, *, production=False):
     iid = import_id or str(uuid4())
@@ -133,7 +170,7 @@ def normalize(root, raw, import_id=None, msp_activity_id_field=None, *, producti
             msp_activity_id_field = next(iter(declared), None)
         selected_values = set()
         stack = []
-        for t in p.findall('Tasks/Task'):
+        for source_order, t in enumerate(p.findall('Tasks/Task')):
             level = int(value(t, 'OutlineLevel') or 1)
             while stack and stack[-1][0] >= level: stack.pop()
             if value(t, 'Summary') == '1':
@@ -141,7 +178,7 @@ def normalize(root, raw, import_id=None, msp_activity_id_field=None, *, producti
                 src = value(t, 'UID')
                 if not src: raise ValueError('Missing summary UID')
                 k = key('wbs', src)
-                wbs.append(Wbs(k, src, value(t, 'WBS'), value(t, 'Name'), stack[-1][1] if stack else None))
+                wbs.append(Wbs(k, src, value(t, 'WBS'), value(t, 'Name'), stack[-1][1] if stack else None, source_order))
                 stack.append((level, k))
             else:
                 if msp_activity_id_field:
@@ -151,13 +188,13 @@ def normalize(root, raw, import_id=None, msp_activity_id_field=None, *, producti
                     sid = found[0]; selected_values.add(sid)
                 else:
                     sid = value(t, 'ID')
-                rows.append((t, sid, value(t, 'UID'), stack[-1][1] if stack else None))
+                rows.append((t, sid, value(t, 'UID'), stack[-1][1] if stack else None, source_order))
     else:
-        for w in p.findall('WBS'):
+        for source_order, w in enumerate(p.findall('WBS')):
             src, parent = value(w, 'ObjectId'), value(w, 'ParentObjectId')
             if not src: raise ValueError('Missing WBS ObjectId')
-            wbs.append(Wbs(key('wbs', src), src, value(w, 'Code'), value(w, 'Name'), key('wbs', parent) if parent else None))
-        rows = [(a, value(a, 'Id'), value(a, 'ObjectId'), key('wbs', value(a, 'WBSObjectId')) if value(a, 'WBSObjectId') else None) for a in p.findall('Activity')]
+            wbs.append(Wbs(key('wbs', src), src, value(w, 'Code'), value(w, 'Name'), key('wbs', parent) if parent else None, source_order, sequence_number(value(w, 'SequenceNumber'))))
+        rows = [(a, value(a, 'Id'), value(a, 'ObjectId'), key('wbs', value(a, 'WBSObjectId')) if value(a, 'WBSObjectId') else None, source_order) for source_order, a in enumerate(p.findall('Activity'))]
     if not rows or len(rows) > 2000: raise ValueError('F0 accepts 1..2000 activities')
     by_wbs = {w.key:w for w in wbs}
     if len(by_wbs) != len(wbs): raise ValueError('Duplicate WBS identity')
@@ -169,7 +206,7 @@ def normalize(root, raw, import_id=None, msp_activity_id_field=None, *, producti
             if node.parent and node.parent not in by_wbs: raise ValueError('Missing WBS parent')
             node = by_wbs.get(node.parent)
     activities, seen = [], set()
-    for index, (a, sid, obj, wk) in enumerate(rows):
+    for index, (a, sid, obj, wk, source_order) in enumerate(rows):
         if wk and wk not in by_wbs: raise ValueError('Missing activity WBS')
         if not sid or not value(a, 'Name'): raise ValueError('Missing activity ID/name')
         # Source object identity preferred. Missing object ID explicitly retains None.
@@ -205,7 +242,7 @@ def normalize(root, raw, import_id=None, msp_activity_id_field=None, *, producti
             hours = None
         activities.append(Activity(key('activity', identity), obj or None, sid, value(a, 'Name'), wk, start, finish, hours, field, dur, value(a, 'CalendarUID' if msp else 'CalendarObjectId'), milestone, value(a, 'ID') if msp else '', ('ExtendedAttribute:' + msp_activity_id_field if msp_activity_id_field else 'ID') if msp else 'Id', duration_format, value(a, 'Status') if not msp else '', value(a, 'Type'), value(a, 'Start' if msp else 'PlannedStartDate'), value(a, 'Finish' if msp else 'PlannedFinishDate')))
     from dataclasses import replace
-    activities = [replace(a, amount_field_values=amount_values(source[0]))
+    activities = [replace(a, amount_field_values=amount_values(source[0]), source_order=source[4])
                   for a, source in zip(activities, rows)]
     return Schedule(iid, sha256(raw).hexdigest(), 'MSP' if msp else 'P6', value(p, 'UID' if msp else 'ObjectId') or value(p, 'Id') or value(p, 'Name'), tuple(wbs), tuple(activities), tuple((k, value(p,k)) for k in ('UID','Id','ObjectId','GUID','Name') if value(p,k)), fields)
 
